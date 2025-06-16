@@ -1,7 +1,7 @@
 // server/routes/resultRoutes.js
 import express from 'express';
 import { getUserResults } from '../services/resultService.js';
-import { authenticateToken } from '../middleware/authentication.js';
+import { verifyToken } from '../middleware/authentication.js';
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET /api/results/user/:userId
-router.get('/user/:userId', authenticateToken, async (req, res) => {
+router.get('/user/:userId', verifyToken, async (req, res) => {
   try {
     const results = await getUserResults(req.params.userId);
     res.json(results);

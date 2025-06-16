@@ -1,7 +1,7 @@
 // server/routes/streakRoutes.js
 import express from 'express';
 import { updateStreak, getUserStreaks } from '../services/streakService.js';
-import { authenticateToken } from '../middleware/authentication.js';
+import { verifyToken } from '../middleware/authentication.js';
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST /api/streaks
-router.post('/', authenticateToken, async (req, res) => {
+router.post('/', verifyToken, async (req, res) => {
     try {
         const { userId, gameId, isSuccess } = req.body;
         const streak = await updateStreak(userId, gameId, isSuccess);
@@ -28,7 +28,7 @@ router.post('/', authenticateToken, async (req, res) => {
 });
 
 // GET /api/streaks/user/:userId
-router.get('/user/:userId', authenticateToken, async (req, res) => {
+router.get('/user/:userId', verifyToken, async (req, res) => {
     try {
         const streaks = await getUserStreaks(req.params.userId);
         res.json(streaks);
