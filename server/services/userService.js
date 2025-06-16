@@ -4,7 +4,7 @@ import { generateToken } from '../middleware/authentication.js';
 import sequelize from '../db/connection.js';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const SECRETKEY = process.env.SECRETKEY || 'your-secret-key';
 
 // פונקציה ליצירת משתמש חדש
 export const registerUser = async (username, password) => {
@@ -67,7 +67,7 @@ export const loginUser = async (username, password) => {
 
         const token = jwt.sign(
             { id: user.id, username: user.username, role: user.role },
-            JWT_SECRET,
+            SECRETKEY,
             { expiresIn: '24h' }
         );
 
@@ -120,6 +120,7 @@ export const updatePassword = async (userId, currentPassword, newPassword) => {
         throw error;
     }
 };
+
 
 // קבלת תוצאות משתמש
 export const getUserResults = async (userId) => {

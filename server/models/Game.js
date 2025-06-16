@@ -20,11 +20,11 @@ const Game = sequelize.define('Game', {
         type: DataTypes.INTEGER,
         defaultValue: 1  // 1 = קל, 2 = בינוני, 3 = קשה
     },
-    category: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 1,
-        comment: '1 = זיכרון, 2 = זריזות ידיים, 3 = מחשבה, 4 = תפיסה מרחבית, 5 = תגובה מהירה'
+  category: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 1,
+    comment: '1 = חשיבה אנליטית, 2 = ריכוז, 3 = מהירות עיבוד, 4 = זיכרון, 5 = יצירתיות, 6 = חשיבה מסתגלת'
     }
 });
 
