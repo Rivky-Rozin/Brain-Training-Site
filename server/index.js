@@ -1,5 +1,3 @@
-// server/index.js
-
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
@@ -27,6 +25,7 @@ const app = express();
 // הגדרת middleware
 app.use(cors());
 app.use(express.json());
+app.use('/api/progress', progressRoutes);
 //מאפשר לשרת להבין בקשות שמגיעות בפורמט JSON.
 app.use(express.urlencoded({ extended: true }));
 //הופך את תקיית public לתקייה סטטית – לדוגמה קבצים של תמונות או CSS יהיו זמינים דרך השרת.
