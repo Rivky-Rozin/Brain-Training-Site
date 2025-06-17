@@ -1,6 +1,6 @@
 // server/routes/resultRoutes.js
 import express from 'express';
-import { getUserResults } from '../services/resultService.js';
+import { getAllResults, getUserResultsController } from '../controllers/resultController.js';
 import { verifyToken } from '../middleware/authentication.js';
 
 const router = express.Router();
@@ -16,14 +16,9 @@ router.get('/', async (req, res) => {
 });
 
 // GET /api/results/user/:userId
-router.get('/user/:userId', verifyToken, async (req, res) => {
-  try {
-    const results = await getUserResults(req.params.userId);
-    res.json(results);
-  } catch (error) {
-    console.error('Error getting user results:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
+router.get('/user/:userId', verifyToken, getUserResultsController);
+
+// GET /api/results/all - כל התוצאות של כל המשתמשים
+router.get('/all', getAllResults);
 
 export default router;

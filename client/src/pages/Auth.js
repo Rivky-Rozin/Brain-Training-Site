@@ -16,12 +16,10 @@ const Auth = () => {
         try {
             const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
             const response = await axios.post(endpoint, { username, password });
-            
             // Save user data and token to localStorage
             localStorage.setItem('user', JSON.stringify(response.data.user));
             localStorage.setItem('token', response.data.token);
-            
-            // Navigate to home page
+            // All users go directly to home page
             navigate('/');
         } catch (err) {
             setError(err.response?.data?.message || 'An error occurred');

@@ -34,6 +34,9 @@ function App() {
                 {userData ? (
                     <>
                         <Link to="/profile" className="mr-4">Profile</Link>
+                        {userData.role === 1 && (
+                            <Link to="/admin" className="mr-4">Admin Dashboard</Link>
+                        )}
                         <button 
                             onClick={() => {
                                 localStorage.removeItem('user');
