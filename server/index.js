@@ -18,6 +18,7 @@ import userRoutes from './routes/userRoutes.js';
 import gameRoutes from './routes/gameRoutes.js';
 import resultRoutes from './routes/resultRoutes.js';
 import streakRoutes from './routes/streakRoutes.js';
+import progressRoutes from './routes/progressRoutes.js';
 
 //משתנה שיש לו את היכולת של express כולל האזנה לראוטס
 const app = express();
