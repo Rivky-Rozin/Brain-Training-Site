@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import './Profile.css';
 import {
     LineChart,
     Line,
@@ -10,8 +12,6 @@ import {
     Legend,
     ResponsiveContainer
 } from 'recharts';
-import axios from 'axios';
-import './Profile.css';
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -20,12 +20,15 @@ const Profile = () => {
     const [streaks, setStreaks] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [profileImage, setProfileImage] = useState(null);
+    const [uploading, setUploading] = useState(false);
+    const [profileImageUrl, setProfileImageUrl] = useState(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const user = JSON.parse(localStorage.getItem('user'));
+                const token = sessionStorage.getItem('token');
+                const user = JSON.parse(sessionStorage.getItem('user'));
                 
                 if (!token || !user) {
                     navigate('/login');
@@ -45,6 +48,7 @@ const Profile = () => {
                 setStreaks(streaksResponse.data);
 
                 setUserData(user);
+                setProfileImageUrl(user.profile_image || null);
                 setLoading(false);
             } catch (err) {
                 setError(err.message);
@@ -54,6 +58,36 @@ const Profile = () => {
 
         fetchUserData();
     }, [navigate]);
+
+    const handleProfileImageChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            setProfileImage(e.target.files[0]);
+        }
+    };
+
+    const handleProfileImageUpload = async () => {
+        if (!profileImage) return;
+        setUploading(true);
+        try {
+            const formData = new FormData();
+            formData.append('image', profileImage);
+            const uploadRes = await axios.post('/api/upload-image', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+            const imageUrl = uploadRes.data.imageUrl;
+            setProfileImageUrl(imageUrl);
+            // עדכון המשתמש בשרת
+            await axios.put(`/api/users/${userData.id}/profile-image`, { profile_image: imageUrl });
+            // עדכון ב-sessionStorage
+            const updatedUser = { ...userData, profile_image: imageUrl };
+            sessionStorage.setItem('user', JSON.stringify(updatedUser));
+            setUserData(updatedUser);
+            window.location.reload();
+        } catch (err) {
+            alert('שגיאה בהעלאת תמונת פרופיל');
+        }
+        setUploading(false);
+    };
 
     if (loading) return <div className="loading">Loading...</div>;
     if (error) return <div className="error">Error: {error}</div>;
@@ -72,7 +106,20 @@ const Profile = () => {
     return (
         <div className="profile-container">
             <h1>Welcome, {userData?.username}!</h1>
-            
+            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                <img
+                    src={profileImageUrl ? profileImageUrl : '/default-profile.png'}
+                    alt="Profile"
+                    style={{ width: 120, height: 120, borderRadius: '50%', objectFit: 'cover', border: '2px solid #4a90e2' }}
+                />
+                <div style={{ marginTop: '1rem' }}>
+                    <input type="file" accept="image/*" onChange={handleProfileImageChange} />
+                    <button onClick={handleProfileImageUpload} disabled={uploading || !profileImage} style={{ marginLeft: 8 }}>
+                        {uploading ? 'מעלה...' : 'העלה תמונת פרופיל'}
+                    </button>
+                </div>
+            </div>
+
             <div className="stats-container">
                 <div className="stat-card">
                     <h3>Current Streak</h3>

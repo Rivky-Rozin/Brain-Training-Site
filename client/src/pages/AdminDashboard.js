@@ -12,7 +12,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 const [usersRes, gamesRes, resultsRes] = await Promise.all([
                     axios.get('/api/users', { headers: { Authorization: `Bearer ${token}` } }),
                     axios.get('/api/games', { headers: { Authorization: `Bearer ${token}` } }),
@@ -41,7 +41,7 @@ const AdminDashboard = () => {
     // Upgrade user to admin
     const makeAdmin = async (userId) => {
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             await axios.put(`/api/users/${userId}/role`, { role: 1 }, {
                 headers: { Authorization: `Bearer ${token}` }
             });

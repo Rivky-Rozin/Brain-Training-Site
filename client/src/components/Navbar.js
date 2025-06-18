@@ -13,6 +13,7 @@ const categories = [
 
 export default function Nav() {
   const [openMenu, setOpenMenu] = useState(null);
+  const user = JSON.parse(sessionStorage.getItem('user'));
   const navRef = useRef(null);
   const navigate = useNavigate();
 
@@ -28,8 +29,8 @@ export default function Nav() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
     navigate('/auth');
   };
 
@@ -101,24 +102,30 @@ export default function Nav() {
 
           {/* Forums */}
           <li className="relative">
-            <span
-              onClick={() => toggleMenu('forums')}
-              className="cursor-pointer hover:text-blue-200 select-none"
-            >
-              Forums
-            </span>
-            {openMenu === 'forums' && (
-              <ul className="absolute left-0 mt-4 w-48 bg-white text-gray-800 rounded shadow-lg z-10">
-                <li className="px-6 py-3 text-gray-500">Coming soon…</li>
-              </ul>
-            )}
+            <Link to="/forum" className="hover:text-blue-200 select-none">Game Forum</Link>
           </li>
+          {/* Admin Dashboard - למנהלים בלבד */}
+          {user?.role === 1 && (
+            <li className="relative">
+              <Link to="/admin" className="hover:text-blue-200 select-none">Admin Dashboard</Link>
+            </li>
+          )}
         </ul>
 
-        {/* Right: brain icon */}
-        <Link to="/" className="text-3xl hover:text-blue-200">
-          🧠
-        </Link>
+        {/* Right: brain icon + תמונת פרופיל */}
+        <div className="flex items-center gap-4">
+          <Link to="/" className="text-3xl hover:text-blue-200">
+            🧠
+          </Link>
+          {user && (
+            <img
+              src={user.profile_image || '/default-profile.png'}
+              alt="profile"
+              className="w-10 h-10 rounded-full border-2 border-white object-cover shadow"
+              style={{ background: '#eee' }}
+            />
+          )}
+        </div>
       </div>
     </nav>
   );

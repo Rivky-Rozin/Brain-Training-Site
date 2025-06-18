@@ -18,7 +18,8 @@ import userRoutes from './routes/userRoutes.js';
 import gameRoutes from './routes/gameRoutes.js';
 import resultRoutes from './routes/resultRoutes.js';
 import streakRoutes from './routes/streakRoutes.js';
-import progressRoutes from './routes/progressRoutes.js';
+import messageRoutes from './routes/messageRoutes.js';
+import uploadImageRoutes from './routes/uploadImageRoutes.js';
 
 //משתנה שיש לו את היכולת של express כולל האזנה לראוטס
 const app = express();
@@ -26,14 +27,12 @@ const app = express();
 // הגדרת middleware
 app.use(cors());
 app.use(express.json());
-app.use('/api/progress', progressRoutes);
 //מאפשר לשרת להבין בקשות שמגיעות בפורמט JSON.
 app.use(express.urlencoded({ extended: true }));
 //הופך את תקיית public לתקייה סטטית – לדוגמה קבצים של תמונות או CSS יהיו זמינים דרך השרת.
 app.use(express.static('public'));
-
-
-
+// הפוך את uploads לתקיה סטטית כדי שהתמונות יהיו זמינות מהדפדפן
+app.use('/uploads', express.static('uploads'));
 
 // ראוט של עמוד הבית
 app.get('/', (req, res) => res.send('🚀 BrainBoost API is up and running'));
@@ -49,6 +48,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/games', gameRoutes);
 app.use('/api/results', resultRoutes);
 app.use('/api/streaks', streakRoutes);
+app.use('/api/messages', messageRoutes);
+app.use('/api/upload-image', uploadImageRoutes);
 
 console.log('Routes registered!');
 

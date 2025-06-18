@@ -41,3 +41,20 @@ export const updateUserRole = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
+
+export const updateUserProfileImage = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { profile_image } = req.body;
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        user.profile_image = profile_image;
+        await user.save();
+        res.json({ message: 'Profile image updated', user });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+};

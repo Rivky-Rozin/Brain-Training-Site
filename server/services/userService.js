@@ -7,16 +7,16 @@ import jwt from 'jsonwebtoken';
 const SECRETKEY = process.env.SECRETKEY || 'your-secret-key';
 
 // פונקציה ליצירת משתמש חדש
-export const registerUser = async (username, password) => {
+export const registerUser = async (username, email, password) => {
     try {
-        // בדיקה אם המשתמש כבר קיים
-        const existingUser = await User.findOne({ where: { username } });
+        // בדיקה אם המשתמש או האימייל כבר קיימים
+        const existingUser = await User.findOne({ where: { [sequelize.Op.or]: [{ username }, { email }] } });
         if (existingUser) {
-            throw new Error('Username already exists');
+            throw new Error('Username or email already exists');
         }
 
         // יצירת משתמש חדש
-        const user = await User.create({ username });
+        const user = await User.create({ username, email });
 
         // יצירת סיסמה מוצפנת
         const salt = await bcrypt.genSalt(10);
@@ -33,12 +33,14 @@ export const registerUser = async (username, password) => {
         const token = generateToken({
             id: user.id,
             username: user.username,
+            email: user.email,
             role: user.role
         });
 
         return {
             id: user.id,
             username: user.username,
+            email: user.email,
             role: user.role,
             token
         };
@@ -48,10 +50,10 @@ export const registerUser = async (username, password) => {
 };
 
 // פונקציה להתחברות משתמש
-export const loginUser = async (username, password) => {
+export const loginUser = async (email, password) => {
     try {
         const user = await User.findOne({ 
-            where: { username },
+            where: { email },
             include: [Password]
         });
 
@@ -66,7 +68,7 @@ export const loginUser = async (username, password) => {
         }
 
         const token = jwt.sign(
-            { id: user.id, username: user.username, role: user.role },
+            { id: user.id, username: user.username, email: user.email, role: user.role },
             SECRETKEY,
             { expiresIn: '24h' }
         );
@@ -74,7 +76,9 @@ export const loginUser = async (username, password) => {
         return {
             id: user.id,
             username: user.username,
+            email: user.email,
             role: user.role,
+            profile_image: user.profile_image,
             token
         };
     } catch (error) {

@@ -12,17 +12,17 @@ export const checkAuth = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { email, password } = req.body;
         
         // Validate input
-        if (!username || !password) {
+        if (!email || !password) {
             return res.status(400).json({ 
-                message: 'Username and password are required' 
+                message: 'Email and password are required' 
             });
         }
 
         // Attempt login
-        const userData = await loginUser(username, password);
+        const userData = await loginUser(email, password);
         
         // Send response with token
         res.json({
@@ -31,7 +31,9 @@ export const login = async (req, res) => {
             user: {
                 id: userData.id,
                 username: userData.username,
-                role: userData.role
+                email: userData.email,
+                role: userData.role,
+                profile_image: userData.profile_image || null // Include profile image if available
             }
         });
 
@@ -54,12 +56,12 @@ export const register = async (req, res) => {
             });
         }
 
-        const { username, password } = req.body;
+        const { username, email, password } = req.body;
         
         // Validate input
-        if (!username || !password) {
+        if (!username || !email || !password) {
             return res.status(400).json({ 
-                message: 'Username and password are required' 
+                message: 'Username, email and password are required' 
             });
         }
 
@@ -71,7 +73,7 @@ export const register = async (req, res) => {
         }
 
         // Attempt registration
-        const userData = await registerUser(username, password);
+        const userData = await registerUser(username, email, password);
         
         // Send response with token
         res.status(201).json({
@@ -80,6 +82,7 @@ export const register = async (req, res) => {
             user: {
                 id: userData.id,
                 username: userData.username,
+                email: userData.email,
                 role: userData.role
             }
         });

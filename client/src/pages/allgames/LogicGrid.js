@@ -84,7 +84,7 @@ export default function LogicGrid() {
     setTimeSpent(timeSec);
 
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       await axios.post(
         '/api/progress',
         { gameId: 1, difficulty: 1, timeSpent: timeSec, attempts },

@@ -7,6 +7,7 @@ const Register = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',
+        email: '',
         password: '',
         confirmPassword: ''
     });
@@ -26,7 +27,7 @@ const Register = () => {
         setLoading(true);
 
         // Validate form
-        if (!formData.username || !formData.password || !formData.confirmPassword) {
+        if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
             setError('All fields are required');
             setLoading(false);
             return;
@@ -47,12 +48,13 @@ const Register = () => {
         try {
             const response = await axios.post('/api/auth/register', {
                 username: formData.username,
+                email: formData.email,
                 password: formData.password
             });
 
             // Store token and user data
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
+            sessionStorage.setItem('token', response.data.token);
+            sessionStorage.setItem('user', JSON.stringify(response.data.user));
 
             // Redirect to home page
             navigate('/');
@@ -78,6 +80,17 @@ const Register = () => {
                             value={formData.username}
                             onChange={handleChange}
                             placeholder="Enter your username"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="Enter your email"
                         />
                     </div>
                     <div className="form-group">
@@ -114,4 +127,4 @@ const Register = () => {
     );
 };
 
-export default Register; 
+export default Register;
