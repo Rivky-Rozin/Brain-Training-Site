@@ -34,7 +34,7 @@ export default function Nav() {
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('token');
     setUser(null);
-    navigate('/auth');
+    navigate('/login'); // שינוי לניווט לעמוד הלוגין
   };
 
   const toggleMenu = (menu) => {

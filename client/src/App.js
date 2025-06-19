@@ -5,7 +5,6 @@ import { UserProvider } from './context/UserContext';
 import Navbar from './components/Navbar';
 import GameContainer from './pages/GameContainer';
 import Home from './pages/Home';
-import Auth from './pages/Auth';
 import Profile from './pages/Profile';
 import CategoriesPage from './pages/CategoriesPage';
 import GameList from './pages/GameList';

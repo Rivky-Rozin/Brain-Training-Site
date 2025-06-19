@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { generateToken } from '../middleware/authentication.js';
 import sequelize from '../db/connection.js';
 import jwt from 'jsonwebtoken';
+import { Op } from 'sequelize'; // תיקון: ייבוא Op
 
 const SECRETKEY = process.env.SECRETKEY || 'your-secret-key';
 
@@ -10,7 +11,7 @@ const SECRETKEY = process.env.SECRETKEY || 'your-secret-key';
 export const registerUser = async (username, email, password) => {
     try {
         // בדיקה אם המשתמש או האימייל כבר קיימים
-        const existingUser = await User.findOne({ where: { [sequelize.Op.or]: [{ username }, { email }] } });
+        const existingUser = await User.findOne({ where: { [Op.or]: [{ username }, { email }] } }); // שימוש ב-Op
         if (existingUser) {
             throw new Error('Username or email already exists');
         }

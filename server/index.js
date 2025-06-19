@@ -21,6 +21,7 @@ import streakRoutes from './routes/streakRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import uploadImageRoutes from './routes/uploadImageRoutes.js';
 import geminiRoutes from './routes/geminiRoutes.js';
+import feedbackRoutes from './routes/feedbackRoutes.js';
 
 //משתנה שיש לו את היכולת של express כולל האזנה לראוטס
 const app = express();
@@ -36,6 +37,8 @@ app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 
 app.use('/api/gemini', geminiRoutes);
+
+app.use('/api/feedback', feedbackRoutes);
 
 
 // ראוט של עמוד הבית

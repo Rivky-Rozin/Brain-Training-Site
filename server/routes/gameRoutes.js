@@ -4,49 +4,9 @@ import { getGames, getGame, getGamesByCategoryController, createGameController }
 
 const router = express.Router();
 
-console.log('Setting up game routes...');
-
-// GET /api/games - מחזיר את כל המשחקים
-router.get('/', (req, res) => {
-    console.log('Game route hit!');
-    try {
-        getGames(req, res);
-    } catch (error) {
-        console.error('Error in game route:', error);
-        res.status(500).json({ error: 'Something went wrong' });
-    }
-});
-
-// GET /api/games/:id - מחזיר משחק ספציפי
-router.get('/:id', (req, res) => {
-    try {
-        getGame(req, res);
-    } catch (error) {
-        console.error('Error in game route:', error);
-        res.status(500).json({ error: 'Something went wrong' });
-    }
-});
-
-// GET /api/games/category/:category - מחזיר משחקים לפי קטגוריה
-router.get('/category/:category', (req, res) => {
-    try {
-        getGamesByCategoryController(req, res);
-    } catch (error) {
-        console.error('Error in game route:', error);
-        res.status(500).json({ error: 'Something went wrong' });
-    }
-});
-
-// POST /api/games - יוצר משחק חדש
-router.post('/', (req, res) => {
-    try {
-        createGameController(req, res);
-    } catch (error) {
-        console.error('Error in game route:', error);
-        res.status(500).json({ error: 'Something went wrong' });
-    }
-});
-
-console.log('Game routes set up!');
+router.get('/', getGames);
+router.get('/:id', getGame);
+router.get('/category/:category', getGamesByCategoryController);
+router.post('/', createGameController);
 
 export default router;

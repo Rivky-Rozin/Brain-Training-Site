@@ -6,6 +6,7 @@ const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
     const [games, setGames] = useState([]);
     const [results, setResults] = useState([]);
+    const [feedbacks, setFeedbacks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -13,14 +14,16 @@ const AdminDashboard = () => {
         const fetchData = async () => {
             try {
                 const token = sessionStorage.getItem('token');
-                const [usersRes, gamesRes, resultsRes] = await Promise.all([
+                const [usersRes, gamesRes, resultsRes, feedbacksRes] = await Promise.all([
                     axios.get('/api/users', { headers: { Authorization: `Bearer ${token}` } }),
                     axios.get('/api/games', { headers: { Authorization: `Bearer ${token}` } }),
-                    axios.get('/api/results/all', { headers: { Authorization: `Bearer ${token}` } })
+                    axios.get('/api/results/all', { headers: { Authorization: `Bearer ${token}` } }),
+                    axios.get('/api/feedback', { headers: { Authorization: `Bearer ${token}` } })
                 ]);
                 setUsers(usersRes.data.users || []);
                 setGames(gamesRes.data.games || []);
                 setResults(resultsRes.data.results || []);
+                setFeedbacks(feedbacksRes.data || []);
             } catch (err) {
                 setError('Error loading data');
             } finally {
@@ -165,6 +168,30 @@ const AdminDashboard = () => {
                                 <td className="border px-4 py-2">{result.score}</td>
                                 <td className="border px-4 py-2">{result.timeSpent}</td>
                                 <td className="border px-4 py-2">{new Date(result.completedAt).toLocaleString()}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                </div>
+
+                <h2 className="text-xl font-semibold mb-4 flex items-center text-blue-700 border-b pb-2">משובים מהמשתמשים</h2>
+                <div className="overflow-x-auto mb-10">
+                <table className="min-w-full bg-white border rounded-xl shadow">
+                    <thead className="bg-blue-100">
+                        <tr>
+                            <th className="border px-4 py-2">ID</th>
+                            <th className="border px-4 py-2">User</th>
+                            <th className="border px-4 py-2">Content</th>
+                            <th className="border px-4 py-2">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {feedbacks.map(fb => (
+                            <tr key={fb.id} className="hover:bg-blue-50 transition-all">
+                                <td className="border px-4 py-2">{fb.id}</td>
+                                <td className="border px-4 py-2">{fb.User?.username || fb.userId}</td>
+                                <td className="border px-4 py-2">{fb.content}</td>
+                                <td className="border px-4 py-2">{new Date(fb.createdAt).toLocaleString()}</td>
                             </tr>
                         ))}
                     </tbody>

@@ -14,7 +14,3 @@ export const handleGeminiQuestion = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
-// Export the controller function
-export default {
-    handleGeminiQuestion
-};

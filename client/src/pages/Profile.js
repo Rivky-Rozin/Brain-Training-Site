@@ -25,6 +25,9 @@ const Profile = () => {
     const [profileImage, setProfileImage] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [profileImageUrl, setProfileImageUrl] = useState(null);
+    const [feedback, setFeedback] = useState("");
+    const [feedbackStatus, setFeedbackStatus] = useState("");
+    const [feedbackLoading, setFeedbackLoading] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -188,6 +191,44 @@ const Profile = () => {
                     </tbody>
                 </table>
             </div>
+
+            {/* טופס משוב למשתמשים שאינם מנהלים */}
+            {userData && userData.role !== 1 && (
+                <div className="feedback-section" style={{ margin: '2rem 0', padding: '1rem', border: '1px solid #eee', borderRadius: 8 }}>
+                    <h3>השאר משוב על האתר</h3>
+                    <textarea
+                        value={feedback}
+                        onChange={e => setFeedback(e.target.value)}
+                        rows={4}
+                        style={{ width: '100%', marginBottom: 8 }}
+                        placeholder="כתוב כאן את המשוב שלך..."
+                    />
+                    <br />
+                    <button
+                        onClick={async () => {
+                            if (!feedback.trim()) return setFeedbackStatus('נא למלא משוב.');
+                            setFeedbackLoading(true);
+                            setFeedbackStatus("");
+                            try {
+                                const token = sessionStorage.getItem('token');
+                                await axios.post('/api/feedback', { content: feedback }, {
+                                    headers: { Authorization: `Bearer ${token}` }
+                                });
+                                setFeedback("");
+                                setFeedbackStatus('תודה על המשוב!');
+                            } catch (err) {
+                                setFeedbackStatus('שגיאה בשליחת המשוב');
+                            }
+                            setFeedbackLoading(false);
+                        }}
+                        disabled={feedbackLoading}
+                        style={{ marginTop: 8 }}
+                    >
+                        {feedbackLoading ? 'שולח...' : 'שלח משוב'}
+                    </button>
+                    {feedbackStatus && <div style={{ marginTop: 8, color: feedbackStatus.includes('שגיאה') ? 'red' : 'green' }}>{feedbackStatus}</div>}
+                </div>
+            )}
         </div>
     );
 };
