@@ -1,6 +1,7 @@
 // client/src/components/Nav.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 const categories = [
   { id: 1, name: 'Analytical Thinking' },
@@ -13,7 +14,7 @@ const categories = [
 
 export default function Nav() {
   const [openMenu, setOpenMenu] = useState(null);
-  const user = JSON.parse(sessionStorage.getItem('user'));
+  const { user, setUser } = useUser();
   const navRef = useRef(null);
   const navigate = useNavigate();
 
@@ -28,9 +29,11 @@ export default function Nav() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Also update user state after logout (since storage event doesn't fire in same tab)
   const handleLogout = () => {
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('token');
+    setUser(null);
     navigate('/auth');
   };
 

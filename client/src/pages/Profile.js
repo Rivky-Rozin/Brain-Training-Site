@@ -12,9 +12,11 @@ import {
     Legend,
     ResponsiveContainer
 } from 'recharts';
+import { useUser } from '../context/UserContext';
 
 const Profile = () => {
     const navigate = useNavigate();
+    const { user, setUser } = useUser();
     const [userData, setUserData] = useState(null);
     const [results, setResults] = useState([]);
     const [streaks, setStreaks] = useState(null);
@@ -28,8 +30,6 @@ const Profile = () => {
         const fetchUserData = async () => {
             try {
                 const token = sessionStorage.getItem('token');
-                const user = JSON.parse(sessionStorage.getItem('user'));
-                
                 if (!token || !user) {
                     navigate('/login');
                     return;
@@ -57,7 +57,7 @@ const Profile = () => {
         };
 
         fetchUserData();
-    }, [navigate]);
+    }, [navigate, user]);
 
     const handleProfileImageChange = (e) => {
         if (e.target.files && e.target.files[0]) {
@@ -77,12 +77,12 @@ const Profile = () => {
             const imageUrl = uploadRes.data.imageUrl;
             setProfileImageUrl(imageUrl);
             // עדכון המשתמש בשרת
-            await axios.put(`/api/users/${userData.id}/profile-image`, { profile_image: imageUrl });
-            // עדכון ב-sessionStorage
-            const updatedUser = { ...userData, profile_image: imageUrl };
+            await axios.put(`/api/users/${user.id}/profile-image`, { profile_image: imageUrl });
+            // עדכון ב-sessionStorage ובקונטקסט
+            const updatedUser = { ...user, profile_image: imageUrl };
             sessionStorage.setItem('user', JSON.stringify(updatedUser));
+            setUser(updatedUser);
             setUserData(updatedUser);
-            window.location.reload();
         } catch (err) {
             alert('שגיאה בהעלאת תמונת פרופיל');
         }

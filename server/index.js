@@ -20,6 +20,7 @@ import resultRoutes from './routes/resultRoutes.js';
 import streakRoutes from './routes/streakRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import uploadImageRoutes from './routes/uploadImageRoutes.js';
+import geminiRoutes from './routes/geminiRoutes.js';
 
 //משתנה שיש לו את היכולת של express כולל האזנה לראוטס
 const app = express();
@@ -33,6 +34,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 // הפוך את uploads לתקיה סטטית כדי שהתמונות יהיו זמינות מהדפדפן
 app.use('/uploads', express.static('uploads'));
+
+app.use('/api/gemini', geminiRoutes);
+
 
 // ראוט של עמוד הבית
 app.get('/', (req, res) => res.send('🚀 BrainBoost API is up and running'));

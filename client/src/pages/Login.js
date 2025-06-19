@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useUser } from '../context/UserContext';
 
 const Login = () => {
     const navigate = useNavigate();
+    const { setUser } = useUser();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -34,6 +36,7 @@ const Login = () => {
             });
             sessionStorage.setItem('token', response.data.token);
             sessionStorage.setItem('user', JSON.stringify(response.data.user));
+            setUser(response.data.user); // עדכון ה-user בקונטקסט
             navigate('/');
         } catch (err) {
             setError(err.response?.data?.message || 'Login failed');

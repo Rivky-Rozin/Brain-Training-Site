@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useUser } from '../context/UserContext';
 import './Register.css';
 
 const Register = () => {
     const navigate = useNavigate();
+    const { setUser } = useUser();
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -55,6 +57,7 @@ const Register = () => {
             // Store token and user data
             sessionStorage.setItem('token', response.data.token);
             sessionStorage.setItem('user', JSON.stringify(response.data.user));
+            setUser(response.data.user); // עדכון ה-user בקונטקסט
 
             // Redirect to home page
             navigate('/');
