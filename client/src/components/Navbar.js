@@ -29,7 +29,7 @@ export default function Nav() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Also update user state after logout (since storage event doesn't fire in same tab)
+  // Handle logout
   const handleLogout = () => {
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('token');
@@ -42,94 +42,96 @@ export default function Nav() {
   };
 
   return (
-    <nav
-      ref={navRef}
-      className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50"
-    >
-      <div className="container mx-auto flex items-center justify-between h-16 px-4">
-        {/* Left: menu items */}
-        <ul className="flex space-x-8">
-          {/* Personal Area */}
-          <li className="relative">
-            <span
-              onClick={() => toggleMenu('personal')}
-              className="cursor-pointer hover:text-blue-200 select-none"
-            >
-              Personal Area
-            </span>
-            {openMenu === 'personal' && (
-              <ul className="absolute left-0 mt-4 w-48 bg-white text-gray-800 rounded shadow-lg z-10">
-                <li className="px-6 py-3 hover:bg-gray-100">
-                  <Link to="/profile">Profile</Link>
-                </li>
-                <li className="px-6 py-3 hover:bg-gray-100">
-                  <span onClick={handleLogout} className="cursor-pointer">Logout</span>
-                </li>
-              </ul>
-            )}
-          </li>
-
-          {/* Brain Training */}
-          <li className="relative">
-            <span
-              onClick={() => toggleMenu('training')}
-              className="cursor-pointer hover:text-blue-200 select-none"
-            >
-              Brain Training
-            </span>
-            {openMenu === 'training' && (
-              <ul className="absolute left-0 mt-4 w-52 max-h-60 overflow-auto bg-white text-gray-800 rounded shadow-lg z-10">
-                {categories.map(cat => (
-                  <li key={cat.id} className="px-6 py-3 hover:bg-gray-100">
-                    <Link to={`/games/${cat.id}`}>{cat.name}</Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
-
-          {/* Articles */}
-          <li className="relative">
-            <span
-              onClick={() => toggleMenu('articles')}
-              className="cursor-pointer hover:text-blue-200 select-none"
-            >
-              Articles
-            </span>
-            {openMenu === 'articles' && (
-              <ul className="absolute left-0 mt-4 w-48 bg-white text-gray-800 rounded shadow-lg z-10">
-                <li className="px-6 py-3 text-gray-500">Coming soon…</li>
-              </ul>
-            )}
-          </li>
-
-          {/* Forums */}
-          <li className="relative">
-            <Link to="/forum" className="hover:text-blue-200 select-none">Game Forum</Link>
-          </li>
-          {/* Admin Dashboard - למנהלים בלבד */}
-          {user?.role === 1 && (
+    <>
+      <nav
+        ref={navRef}
+        className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50"
+      >
+        <div className="container mx-auto flex items-center justify-between h-16 px-4">
+          {/* Left menu */}
+          <ul className="flex space-x-8">
             <li className="relative">
-              <Link to="/admin" className="hover:text-blue-200 select-none">Admin Dashboard</Link>
+              <span
+                onClick={() => toggleMenu('personal')}
+                className="cursor-pointer hover:text-blue-200 select-none"
+              >
+                Personal Area
+              </span>
+              {openMenu === 'personal' && (
+                <ul className="absolute left-0 mt-4 w-48 bg-white text-gray-800 rounded shadow-lg z-10">
+                  <li className="px-6 py-3 hover:bg-gray-100">
+                    <Link to="/profile">Profile</Link>
+                  </li>
+                  <li className="px-6 py-3 hover:bg-gray-100">
+                    <span onClick={handleLogout} className="cursor-pointer">
+                      Logout
+                    </span>
+                  </li>
+                </ul>
+              )}
             </li>
-          )}
-        </ul>
+            <li className="relative">
+              <span
+                onClick={() => toggleMenu('training')}
+                className="cursor-pointer hover:text-blue-200 select-none"
+              >
+                Brain Training
+              </span>
+              {openMenu === 'training' && (
+                <ul className="absolute left-0 mt-4 w-52 max-h-60 overflow-auto bg-white text-gray-800 rounded shadow-lg z-10">
+                  {categories.map(cat => (
+                    <li key={cat.id} className="px-6 py-3 hover:bg-gray-100">
+                      <Link to={`/games/${cat.id}`}>{cat.name}</Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+            <li className="relative">
+              <span
+                onClick={() => toggleMenu('articles')}
+                className="cursor-pointer hover:text-blue-200 select-none"
+              >
+                Articles
+              </span>
+              {openMenu === 'articles' && (
+                <ul className="absolute left-0 mt-4 w-48 bg-white text-gray-800 rounded shadow-lg z-10">
+                  <li className="px-6 py-3 text-gray-500">Coming soon…</li>
+                </ul>
+              )}
+            </li>
+            <li className="relative">
+              <Link to="/forum" className="hover:text-blue-200 select-none">
+                Game Forum
+              </Link>
+            </li>
+            {user?.role === 1 && (
+              <li className="relative">
+                <Link to="/admin" className="hover:text-blue-200 select-none">
+                  Admin Dashboard
+                </Link>
+              </li>
+            )}
+          </ul>
 
-        {/* Right: brain icon + תמונת פרופיל */}
-        <div className="flex items-center gap-4">
-          <Link to="/" className="text-3xl hover:text-blue-200">
-            🧠
-          </Link>
-          {user && (
-            <img
-              src={user.profile_image || '/default-profile.png'}
-              alt="profile"
-              className="w-10 h-10 rounded-full border-2 border-white object-cover shadow"
-              style={{ background: '#eee' }}
-            />
-          )}
+          {/* Right side */}
+          <div className="flex items-center gap-4">
+            <Link to="/" className="text-3xl hover:text-blue-200">
+              🧠
+            </Link>
+            {user && (
+              <img
+                src={user.profile_image || '/default-profile.png'}
+                alt="profile"
+                className="w-10 h-10 rounded-full border-2 border-white object-cover shadow"
+                style={{ background: '#eee' }}
+              />
+            )}
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+      {/* Spacer so content below isn’t hidden under fixed nav */}
+      <div className="h-16" />
+    </>
   );
 }
