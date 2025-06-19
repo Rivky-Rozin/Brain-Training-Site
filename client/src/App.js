@@ -11,7 +11,6 @@ import Profile from './pages/Profile';
 import CategoriesPage from './pages/CategoriesPage';
 import GameList from './pages/GameList';
 import Game from './pages/Game';              // עמוד משחק יחיד (אם קיים)
-import Profile from './pages/Profile';
 import Result from './pages/Result';
 import Forum from './pages/Forum';
 import ReportDownload from './pages/ReportDownload';
