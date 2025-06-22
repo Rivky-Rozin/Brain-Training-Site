@@ -51,6 +51,8 @@ export const getGamesByCategoryController = async (req, res) => {
     }
 };
 
+
+
 export const createGameController = async (req, res) => {
     try {
         const game = await createGame(req.body);

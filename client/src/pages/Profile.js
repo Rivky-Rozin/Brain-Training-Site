@@ -26,8 +26,12 @@ const Profile = () => {
 
   const [profileImageUrl, setProfileImageUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
-
   const fileInputRef = useRef(null);
+
+  // Feedback form state
+  const [feedback, setFeedback] = useState("");
+  const [feedbackStatus, setFeedbackStatus] = useState("");
+  const [feedbackLoading, setFeedbackLoading] = useState(false);
 
   // Fetch data on mount
   useEffect(() => {
@@ -87,6 +91,27 @@ const Profile = () => {
     }
   };
 
+  // Handle feedback submit
+  const handleFeedbackSubmit = async () => {
+    if (!feedback.trim()) {
+      setFeedbackStatus('נא למלא משוב.');
+      return;
+    }
+    setFeedbackLoading(true);
+    setFeedbackStatus("");
+    try {
+      const token = sessionStorage.getItem('token');
+      await axios.post('/api/feedback', { content: feedback }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setFeedback("");
+      setFeedbackStatus('תודה על המשוב!');
+    } catch (err) {
+      setFeedbackStatus('שגיאה בשליחת המשוב');
+    }
+    setFeedbackLoading(false);
+  };
+
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">Error: {error}</div>;
 
@@ -121,7 +146,7 @@ const Profile = () => {
         {uploading && <div className="uploading-overlay">מעלה...</div>}
       </div>
 
-      {/* <div className="stats-container">
+      <div className="stats-container">
         <div className="stat-card">
           <h3>Current Streak</h3>
           <p>{streaks?.currentStreak || 0} days</p>
@@ -134,7 +159,7 @@ const Profile = () => {
           <h3>Last Training</h3>
           <p>{streaks?.lastPlayedAt ? new Date(streaks.lastPlayedAt).toLocaleDateString() : 'Never'}</p>
         </div>
-      </div> */}
+      </div>
 
       <div className="graphs-container">
         <div className="graph-card">
@@ -190,12 +215,32 @@ const Profile = () => {
         </table>
       </div>
 
+      {/* Feedback form for non-admin users */}
       {userData.role !== 1 && (
-        <div className="feedback-section">
+        <div className="feedback-section" style={{ margin: '2rem 0', padding: '1rem', border: '1px solid #eee', borderRadius: 8 }}>
           <h3>השאר משוב על האתר</h3>
-          {/* ... טופס משוב כמו שהיה ... */}
+          <textarea
+            value={feedback}
+            onChange={e => setFeedback(e.target.value)}
+            rows={4}
+            style={{ width: '100%', marginBottom: 8 }}
+            placeholder="כתוב כאן את המשוב שלך..."
+          />
+          <button
+            onClick={handleFeedbackSubmit}
+            disabled={feedbackLoading}
+            style={{ marginBottom: 8 }}
+          >
+            {feedbackLoading ? 'שולח...' : 'שלח משוב'}
+          </button>
+          {feedbackStatus && (
+            <div style={{ color: feedbackStatus.includes('שגיאה') ? 'red' : 'green' }}>
+              {feedbackStatus}
+            </div>
+          )}
         </div>
       )}
+
     </div>
   );
 };
