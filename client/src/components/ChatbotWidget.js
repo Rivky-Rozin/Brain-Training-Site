@@ -1,4 +1,6 @@
+// src/components/ChatbotWidget.js
 import React, { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import './ChatbotWidget.css';
 
 const BOT_LABEL = "Want to better understand how your brain works? Ask me!";
@@ -28,6 +30,17 @@ const SendSVG = ({ size = 20 }) => (
 );
 
 const ChatbotWidget = () => {
+  const location = useLocation();
+  const user = sessionStorage.getItem('user');
+
+  // לא מציגים את הבוט אם המשתמש לא מחובר או אם זה עמוד משחק
+  const isGamePage = ['/play', '/game'].some(path =>
+    location.pathname.startsWith(path)
+  );
+  if (!user || isGamePage) {
+    return null;
+  }
+
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
     { sender: 'bot', text: 'Hi! I am your BrainBot. How can I help you today?' }
@@ -45,7 +58,7 @@ const ChatbotWidget = () => {
   const handleSend = async () => {
     if (!input.trim()) return;
     const userMessage = { sender: 'user', text: input };
-    setMessages((msgs) => [...msgs, userMessage]);
+    setMessages(msgs => [...msgs, userMessage]);
     setInput('');
     setLoading(true);
     try {
@@ -55,14 +68,20 @@ const ChatbotWidget = () => {
         body: JSON.stringify({ question: input })
       });
       const data = await res.json();
-      setMessages((msgs) => [...msgs, { sender: 'bot', text: data.answer || 'Sorry, I could not answer.' }]);
+      setMessages(msgs => [
+        ...msgs,
+        { sender: 'bot', text: data.answer || 'Sorry, I could not answer.' }
+      ]);
     } catch (e) {
-      setMessages((msgs) => [...msgs, { sender: 'bot', text: 'Error contacting the bot.' }]);
+      setMessages(msgs => [
+        ...msgs,
+        { sender: 'bot', text: 'Error contacting the bot.' }
+      ]);
     }
     setLoading(false);
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = e => {
     if (e.key === 'Enter') handleSend();
   };
 
@@ -73,16 +92,24 @@ const ChatbotWidget = () => {
         <RobotSVG size={32} />
         <span className="chatbot-widget-label">{BOT_LABEL}</span>
       </div>
+
       {/* Chat Popup */}
       {open && (
         <div className="chatbot-widget-popup">
           <div className="chatbot-widget-header">
             <RobotSVG size={24} /> BrainBot
-            <span className="chatbot-widget-close" onClick={() => setOpen(false)}><CloseSVG size={20} /></span>
+            <span className="chatbot-widget-close" onClick={() => setOpen(false)}>
+              <CloseSVG size={20} />
+            </span>
           </div>
           <div className="chatbot-widget-messages">
             {messages.map((msg, i) => (
-              <div key={i} className={`chatbot-widget-msg chatbot-widget-msg-${msg.sender}`}>{msg.text}</div>
+              <div
+                key={i}
+                className={`chatbot-widget-msg chatbot-widget-msg-${msg.sender}`}
+              >
+                {msg.text}
+              </div>
             ))}
             <div ref={messagesEndRef} />
           </div>

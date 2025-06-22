@@ -18,6 +18,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import NotFound from './pages/NotFound';
+import BrainArticle from './pages/BrainArticle';
+
 
 function ProtectedRoute({ children }) {
   const user = sessionStorage.getItem('user');
@@ -60,6 +62,7 @@ export default function App() {
           {/* כניסה והרשמה */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
++         <Route path="/article" element={<BrainArticle />} />
 
           {/* כל כתובת אחרת */}
           <Route path="*" element={<NotFound />} />

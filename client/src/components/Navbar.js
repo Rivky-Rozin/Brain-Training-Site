@@ -96,7 +96,8 @@ export default function Nav() {
               </span>
               {openMenu === 'articles' && (
                 <ul className="absolute left-0 mt-4 w-48 bg-white text-gray-800 rounded shadow-lg z-10">
-                  <li className="px-6 py-3 text-gray-500">Coming soon…</li>
+                 <li><Link to="/article">Brain Article</Link></li>
+
                 </ul>
               )}
             </li>

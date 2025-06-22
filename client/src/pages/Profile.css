@@ -128,3 +128,35 @@ tr:hover {
         overflow-x: auto;
     }
 } 
+
+/* עוטף התמונה – מרכז ומוסיף מרווח */
+.profile-image-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem; /* ניתן לשנות */
+    position: relative;
+}
+
+/* התמונה עצמה – עיגול קטן */
+.profile-image {
+    width: 80px;           /* גודל רוחב */
+    height: 80px;          /* גובה משתווה לרוחב */
+    border-radius: 50%;    /* עיגול מלא */
+    object-fit: cover;     /* חיתוך מרכזי */
+    border: 2px solid #4a90e2; /* ניתן לשנות צבע ומרחב */
+    cursor: pointer;       /* מראה שניתן ללחוץ */
+}
+
+/* חיווי העלאה (אופציונלי) */
+.uploading-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255,255,255,0.8);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #333;
+}
