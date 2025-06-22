@@ -69,14 +69,22 @@ const Profile = () => {
     try {
       const formData = new FormData();
       formData.append('image', file);
+      const token = sessionStorage.getItem('token');
       const uploadRes = await axios.post('/api/upload-image', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
+        },
       });
       const imageUrl = uploadRes.data.imageUrl;
       setProfileImageUrl(imageUrl);
 
       // update on server
-      await axios.put(`/api/users/${user.id}/profile-image`, { profile_image: imageUrl });
+      await axios.put(`/api/users/${user.id}/profile-image`, { profile_image: imageUrl }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
 
       // update context & sessionStorage
       const updatedUser = { ...user, profile_image: imageUrl };

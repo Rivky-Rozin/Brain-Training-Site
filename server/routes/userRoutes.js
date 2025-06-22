@@ -2,8 +2,6 @@
 import express from 'express';
 import { getUsers, updateUserRole, updateUserProfileImage } from '../controllers/userController.js';
 import { verifyToken, isAdmin } from '../middleware/authentication.js';
-import { deleteOldProfileImageIfExists } from '../middleware/imageUpload.js';
-import upload from '../middleware/imageUpload.js';
 
 const router = express.Router();
 
@@ -14,6 +12,6 @@ router.get('/', verifyToken,isAdmin,  getUsers);
 router.put('/:userId/role', verifyToken, isAdmin, updateUserRole);
 
 // עדכון תמונת פרופיל (כולל מחיקת ישנה)
-router.put('/:userId/profile-image', verifyToken, deleteOldProfileImageIfExists, upload.single('image'), updateUserProfileImage);
+router.put('/:userId/profile-image', verifyToken, updateUserProfileImage);
 
 export default router;

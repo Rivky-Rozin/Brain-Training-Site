@@ -31,16 +31,6 @@ const SendSVG = ({ size = 20 }) => (
 
 const ChatbotWidget = () => {
   const location = useLocation();
-  const user = sessionStorage.getItem('user');
-
-  // לא מציגים את הבוט אם המשתמש לא מחובר או אם זה עמוד משחק
-  const isGamePage = ['/play', '/game'].some(path =>
-    location.pathname.startsWith(path)
-  );
-  if (!user || isGamePage) {
-    return null;
-  }
-
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
     { sender: 'bot', text: 'Hi! I am your BrainBot. How can I help you today?' }
@@ -49,11 +39,18 @@ const ChatbotWidget = () => {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
+  const user = sessionStorage.getItem('user');
+  const isGamePage = ['/play', '/game'].some(path => location.pathname.startsWith(path));
+
   useEffect(() => {
     if (open && messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, open]);
+
+  if (!user || isGamePage) {
+    return null;
+  }
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -62,9 +59,13 @@ const ChatbotWidget = () => {
     setInput('');
     setLoading(true);
     try {
+      const token = sessionStorage.getItem('token');
       const res = await fetch('/api/gemini/ask', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
         body: JSON.stringify({ question: input })
       });
       const data = await res.json();

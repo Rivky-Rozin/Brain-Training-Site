@@ -60,17 +60,22 @@ export default function Forum() {
             if (file) {
                 const formData = new FormData();
                 formData.append('image', file); // תמונה או וידאו
+                const token = sessionStorage.getItem('token');
                 const uploadRes = await axios.post('/api/upload-image', formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        ...(token ? { Authorization: `Bearer ${token}` } : {})
+                    },
                 });
                 media_url = uploadRes.data.imageUrl;
             }
+            const token = sessionStorage.getItem('token');
             const res = await axios.post('/api/messages', {
                 user_id: user?.id,
                 content,
                 media_url,
             },
-            sessionStorage.getItem('token') ? { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } } : undefined
+            token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
             );
             setMessages((prev) => [...prev, res.data]);
             setContent('');
