@@ -12,19 +12,6 @@ export const getUsers = async (req, res) => {
     }
 };
 
-export const getTables = async (req, res) => {
-    try {
-        const tables = await getTablesFromService();
-        res.json({ 
-            message: 'רשימת כל הטבלאות בבסיס הנתונים:',
-            tables
-        });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Server error' });
-    }
-};
-
 export const updateUserRole = async (req, res) => {
     try {
         const { userId } = req.params;

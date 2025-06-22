@@ -25,16 +25,16 @@ export function ColorMatchSpeed() {
   useEffect(() => {
     if (timeLeft === 0) {
       const timeSpent = Math.floor((Date.now() - startRef.current) / 1000);
+      // הגדרת token פעם אחת בלבד
       const token = sessionStorage.getItem('token');
-      // ניצחון אם הגיעו ל-10 נקודות לפחות
+      // נצחון אם השיגו 10 נקודות
       const winScore = score >= 10 ? 1 : 0;
       axios.post('/api/results', {
         gameId: 9,
         score: winScore,
         timeSpent
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      }).catch(console.error);
+      }, token ? { headers: { Authorization: `Bearer ${token}` } } : undefined)
+      .catch(console.error);
     }
   }, [timeLeft, score]);
 

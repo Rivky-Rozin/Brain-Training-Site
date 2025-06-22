@@ -31,7 +31,8 @@ export function WordListMemory() {
       const timeSpent = Math.floor((Date.now() - startRef.current)/1000);
       // ניצחון אם נזכרו לפחות 3 מילים
       const score = correct >= 3 ? 1 : 0;
-      axios.post('/api/results', { gameId: 12, score, timeSpent })
+      const token = sessionStorage.getItem('token');
+      axios.post('/api/results', { gameId: 12, score, timeSpent }, token ? { headers: { Authorization: `Bearer ${token}` } } : undefined)
         .catch(console.error);
     }
   }, [phase]);

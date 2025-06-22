@@ -27,7 +27,8 @@ export default function GameList() {
         const url = category
           ? `/api/games/category/${category}`
           : '/api/games';
-        const { data } = await axios.get(url);
+        const token = sessionStorage.getItem('token');
+        const { data } = await axios.get(url, token ? { headers: { Authorization: `Bearer ${token}` } } : undefined);
         const list = Array.isArray(data)
           ? data
           : Array.isArray(data.games)

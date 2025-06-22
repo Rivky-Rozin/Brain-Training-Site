@@ -37,14 +37,3 @@ export const getGamesByCategory = async (category) => {
         throw error;
     }
 };
-
-// יצירת משחק חדש
-export const createGame = async (gameData) => {
-    try {
-        const game = await Game.create(gameData);
-        return game;
-    } catch (error) {
-        console.error('Error in createGame service:', error);
-        throw error;
-    }
-}; 

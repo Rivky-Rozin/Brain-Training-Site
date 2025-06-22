@@ -1,5 +1,5 @@
 // התפקיד של הקונטרולר הוא לפנות לפונקציות בסרוויס שמדברות עם בסיס הנתונים ולהתמודד עם הנתונים שהוא מקבל מהשרת
-import { getAllGames, getGameById, getGamesByCategory, createGame } from '../services/gameService.js';
+import { getAllGames, getGameById, getGamesByCategory } from '../services/gameService.js';
 
 export const getGames = async (req, res) => {
     try {
@@ -44,24 +44,6 @@ export const getGamesByCategoryController = async (req, res) => {
         });
     } catch (err) {
         console.error('Controller: Error in getGamesByCategory:', err);
-        res.status(500).json({ 
-            error: 'Server error',
-            details: err.message 
-        });
-    }
-};
-
-
-
-export const createGameController = async (req, res) => {
-    try {
-        const game = await createGame(req.body);
-        res.status(201).json({ 
-            message: 'Game created successfully',
-            game: game
-        });
-    } catch (err) {
-        console.error('Controller: Error in createGame:', err);
         res.status(500).json({ 
             error: 'Server error',
             details: err.message 

@@ -25,16 +25,15 @@ export default function CardPairs() {
   useEffect(() => {
     if (matched.length === cards.length && cards.length > 0) {
       const timeSpent = Math.floor((Date.now() - startRef.current) / 1000);
-      const token = sessionStorage.getItem('token');
       // ניצחון אם כל הזוגות נמצאו בפחות מ-20 מהלכים
       const winScore = moves < 20 ? 1 : 0;
+      const token = sessionStorage.getItem('token');
       axios.post('/api/results', {
         gameId: 10,
         score: winScore,
         timeSpent
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      }).catch(console.error);
+      }, token ? { headers: { Authorization: `Bearer ${token}` } } : undefined)
+      .catch(console.error);
     }
   }, [matched, cards.length, moves]);
 

@@ -10,6 +10,13 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    const [userFilter, setUserFilter] = useState('');
+    const [userSort, setUserSort] = useState({ key: 'id', direction: 'asc' });
+    const [gameFilter, setGameFilter] = useState('');
+    const [gameSort, setGameSort] = useState({ key: 'id', direction: 'asc' });
+    const [resultFilter, setResultFilter] = useState('');
+    const [resultSort, setResultSort] = useState({ key: 'id', direction: 'asc' });
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -65,6 +72,50 @@ const AdminDashboard = () => {
         return { avgScore, avgTime, totalTime };
     };
 
+    // Sorting helpers
+    const sortData = (data, sort) => {
+        const sorted = [...data].sort((a, b) => {
+            let aValue = a[sort.key];
+            let bValue = b[sort.key];
+            if (typeof aValue === 'string') aValue = aValue.toLowerCase();
+            if (typeof bValue === 'string') bValue = bValue.toLowerCase();
+            if (aValue < bValue) return sort.direction === 'asc' ? -1 : 1;
+            if (aValue > bValue) return sort.direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+        return sorted;
+    };
+
+    // Filtered and sorted data
+    const filteredUsers = sortData(
+        users.filter(u => u.username?.toLowerCase().includes(userFilter.toLowerCase())),
+        userSort
+    );
+    const filteredGames = sortData(
+        games.filter(g => g.name?.toLowerCase().includes(gameFilter.toLowerCase())),
+        gameSort
+    );
+    const filteredResults = sortData(
+        results.filter(r => {
+            const user = r.User?.username || '';
+            const game = r.Game?.name || '';
+            return (
+                user.toLowerCase().includes(resultFilter.toLowerCase()) ||
+                game.toLowerCase().includes(resultFilter.toLowerCase())
+            );
+        }),
+        resultSort
+    );
+
+    // Table header sort click handler
+    const handleSort = (sortSetter, sort, key) => {
+        if (sort.key === key) {
+            sortSetter({ key, direction: sort.direction === 'asc' ? 'desc' : 'asc' });
+        } else {
+            sortSetter({ key, direction: 'asc' });
+        }
+    };
+
     if (loading) return <div className="p-8">Loading data...</div>;
     if (error) return <div className="p-8 text-red-600">{error}</div>;
 
@@ -78,18 +129,27 @@ const AdminDashboard = () => {
                         Export to Excel
                     </button>
                 </h2>
+                <div className="flex mb-2">
+                    <input
+                        type="text"
+                        placeholder="Filter by username..."
+                        className="border rounded px-2 py-1 mr-2"
+                        value={userFilter}
+                        onChange={e => setUserFilter(e.target.value)}
+                    />
+                </div>
                 <div className="overflow-x-auto mb-10">
                 <table className="min-w-full bg-white border rounded-xl shadow">
                     <thead className="bg-blue-100">
                         <tr>
-                            <th className="border px-4 py-2">ID</th>
-                            <th className="border px-4 py-2">Username</th>
-                            <th className="border px-4 py-2">Role</th>
+                            <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setUserSort, userSort, 'id')}>ID {userSort.key === 'id' ? (userSort.direction === 'asc' ? '▲' : '▼') : ''}</th>
+                            <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setUserSort, userSort, 'username')}>Username {userSort.key === 'username' ? (userSort.direction === 'asc' ? '▲' : '▼') : ''}</th>
+                            <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setUserSort, userSort, 'role')}>Role {userSort.key === 'role' ? (userSort.direction === 'asc' ? '▲' : '▼') : ''}</th>
                             <th className="border px-4 py-2">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map(user => (
+                        {filteredUsers.map(user => (
                             <tr key={user.id} className="hover:bg-blue-50 transition-all">
                                 <td className="border px-4 py-2">{user.id}</td>
                                 <td className="border px-4 py-2">{user.username}</td>
@@ -112,21 +172,30 @@ const AdminDashboard = () => {
                         Export to Excel
                     </button>
                 </h2>
+                <div className="flex mb-2">
+                    <input
+                        type="text"
+                        placeholder="Filter by game name..."
+                        className="border rounded px-2 py-1 mr-2"
+                        value={gameFilter}
+                        onChange={e => setGameFilter(e.target.value)}
+                    />
+                </div>
                 <div className="overflow-x-auto mb-10">
                 <table className="min-w-full bg-white border rounded-xl shadow">
                     <thead className="bg-blue-100">
                         <tr>
-                            <th className="border px-4 py-2">ID</th>
-                            <th className="border px-4 py-2">Game Name</th>
-                            <th className="border px-4 py-2">Category</th>
-                            <th className="border px-4 py-2">Difficulty</th>
+                            <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setGameSort, gameSort, 'id')}>ID {gameSort.key === 'id' ? (gameSort.direction === 'asc' ? '▲' : '▼') : ''}</th>
+                            <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setGameSort, gameSort, 'name')}>Game Name {gameSort.key === 'name' ? (gameSort.direction === 'asc' ? '▲' : '▼') : ''}</th>
+                            <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setGameSort, gameSort, 'category')}>Category {gameSort.key === 'category' ? (gameSort.direction === 'asc' ? '▲' : '▼') : ''}</th>
+                            <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setGameSort, gameSort, 'difficulty')}>Difficulty {gameSort.key === 'difficulty' ? (gameSort.direction === 'asc' ? '▲' : '▼') : ''}</th>
                             <th className="border px-4 py-2">Avg. Score</th>
                             <th className="border px-4 py-2">Avg. Time (sec)</th>
                             <th className="border px-4 py-2">Total Time (sec)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {games.map(game => {
+                        {filteredGames.map(game => {
                             const stats = getGameStats(game.id);
                             return (
                                 <tr key={game.id} className="hover:bg-blue-50 transition-all">
@@ -149,19 +218,28 @@ const AdminDashboard = () => {
                         Export to Excel
                     </button>
                 </h2>
+                <div className="flex mb-2">
+                    <input
+                        type="text"
+                        placeholder="Filter by user or game..."
+                        className="border rounded px-2 py-1 mr-2"
+                        value={resultFilter}
+                        onChange={e => setResultFilter(e.target.value)}
+                    />
+                </div>
                 <div className="overflow-x-auto">
                 <table className="min-w-full bg-white border rounded-xl shadow">
                     <thead className="bg-blue-100">
                         <tr>
-                            <th className="border px-4 py-2">User</th>
-                            <th className="border px-4 py-2">Game</th>
-                            <th className="border px-4 py-2">Score</th>
-                            <th className="border px-4 py-2">Time (sec)</th>
-                            <th className="border px-4 py-2">Completed At</th>
+                            <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setResultSort, resultSort, 'User')}>User</th>
+                            <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setResultSort, resultSort, 'Game')}>Game</th>
+                            <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setResultSort, resultSort, 'score')}>Score {resultSort.key === 'score' ? (resultSort.direction === 'asc' ? '▲' : '▼') : ''}</th>
+                            <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setResultSort, resultSort, 'timeSpent')}>Time (sec) {resultSort.key === 'timeSpent' ? (resultSort.direction === 'asc' ? '▲' : '▼') : ''}</th>
+                            <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setResultSort, resultSort, 'completedAt')}>Completed At {resultSort.key === 'completedAt' ? (resultSort.direction === 'asc' ? '▲' : '▼') : ''}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {results.map(result => (
+                        {filteredResults.map(result => (
                             <tr key={result.id} className="hover:bg-blue-50 transition-all">
                                 <td className="border px-4 py-2">{result.User?.username}</td>
                                 <td className="border px-4 py-2">{result.Game?.name}</td>

@@ -28,9 +28,8 @@ export default function AlternateUses() {
         gameId: 13,
         score,
         timeSpent
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      }).catch(console.error);
+      }, token ? { headers: { Authorization: `Bearer ${token}` } } : undefined)
+      .catch(console.error);
       return;
     }
     const timer = setInterval(() => setTimeLeft(t => t - 1), 1000);

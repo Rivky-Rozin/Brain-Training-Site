@@ -10,7 +10,10 @@ const GameList = () => {
     useEffect(() => {
         const fetchGames = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/games');
+                const token = sessionStorage.getItem('token');
+                const response = await axios.get('http://localhost:5000/api/games',
+                  token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
+                );
                 console.log('Games fetched:', response.data);
                 setGames(response.data.games);
                 setLoading(false);
@@ -61,4 +64,4 @@ const GameList = () => {
     );
 };
 
-export default GameList; 
+export default GameList;
