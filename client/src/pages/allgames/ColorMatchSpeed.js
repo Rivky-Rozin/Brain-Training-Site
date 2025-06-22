@@ -26,9 +26,11 @@ export function ColorMatchSpeed() {
     if (timeLeft === 0) {
       const timeSpent = Math.floor((Date.now() - startRef.current) / 1000);
       const token = sessionStorage.getItem('token');
+      // ניצחון אם הגיעו ל-10 נקודות לפחות
+      const winScore = score >= 10 ? 1 : 0;
       axios.post('/api/results', {
         gameId: 9,
-        score,
+        score: winScore,
         timeSpent
       }, {
         headers: { Authorization: `Bearer ${token}` }

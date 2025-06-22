@@ -1,5 +1,5 @@
 // בדיקות לפני שמעבירים לראוטס, למשל בדיקה אם המשתמש מחובר לפני שפונים לבסיס נתונים
-import { loginUser, registerUser, updatePassword, getUserResults, getUserStreaks } from '../services/userService.js';
+import { loginUser, registerUser, updatePassword, getUserResults } from '../services/userService.js';
 
 export const checkAuth = async (req, res) => {
     try {
@@ -137,20 +137,6 @@ export const getUserResultsController = async (req, res) => {
         console.error('Error getting user results:', error);
         res.status(500).json({ 
             message: error.message || 'Failed to get user results'
-        });
-    }
-};
-
-// Get user streaks
-export const getUserStreaksController = async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        const streaks = await getUserStreaks(userId);
-        res.json(streaks);
-    } catch (error) {
-        console.error('Error getting user streaks:', error);
-        res.status(500).json({ 
-            message: error.message || 'Failed to get user streaks'
         });
     }
 };

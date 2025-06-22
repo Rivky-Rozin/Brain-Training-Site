@@ -12,7 +12,9 @@ export function ShapeTransformation() {
     const updated = [...canvas, { id: Date.now(), shape: selection }];
     setCanvas(updated);
     const timeSpent = Math.floor((Date.now() - startRef.current)/1000);
-    axios.post('/api/results', { gameId: 15, score: updated.length, timeSpent })
+    // ניצחון אם נוספו לפחות 4 צורות
+    const score = updated.length >= 4 ? 1 : 0;
+    axios.post('/api/results', { gameId: 15, score, timeSpent })
       .catch(console.error);
   };
 

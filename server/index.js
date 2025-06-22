@@ -54,7 +54,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/games', gameRoutes);
 app.use('/api/results', resultRoutes);
-app.use('/api/streaks', streakRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/upload-image', uploadImageRoutes);
 

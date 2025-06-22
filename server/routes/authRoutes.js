@@ -1,6 +1,6 @@
 // server/routes/authRoutes.js
 import express from 'express';
-import { checkAuth, login, register, changePassword, getUserResultsController, getUserStreaksController } from '../controllers/authController.js';
+import { checkAuth, login, register, changePassword, getUserResultsController } from '../controllers/authController.js';
 import { verifyToken } from '../middleware/authentication.js';
 
 const router = express.Router();
@@ -23,6 +23,5 @@ router.post('/change-password', verifyToken, changePassword);
 
 // Protected routes
 router.get('/results/:userId', verifyToken, getUserResultsController);
-router.get('/streaks/:userId', verifyToken, getUserStreaksController);
 
 export default router;

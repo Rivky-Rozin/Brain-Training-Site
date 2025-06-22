@@ -41,9 +41,11 @@ export default function FocusSquares() {
     if (timeLeft <= 0 || gameOver) {
       const timeSpent = Math.floor((Date.now() - startRef.current) / 1000);
       const token = sessionStorage.getItem('token');
+      // ניצחון אם כל היעדים נמצאו
+      const winScore = score === totalTargets ? 1 : 0;
       axios.post('/api/results', {
         gameId: 5,
-        score,
+        score: winScore,
         timeSpent
       }, {
         headers: { Authorization: `Bearer ${token}` }

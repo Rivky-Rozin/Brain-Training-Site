@@ -52,15 +52,15 @@ export default function StroopTest() {
       // session finished
       const totalTime = times.reduce((a, b) => a + b, 0) + reaction;
       const token = sessionStorage.getItem('token');
+      // ניצחון אם ענו נכון לפחות 7
+      const winScore = score >= 7 ? 1 : 0;
       axios.post('/api/results', {
         gameId: 6,
-        score,
+        score: winScore,
         timeSpent: Math.floor(totalTime / 1000)
       }, {
         headers: { Authorization: `Bearer ${token}` }
       }).catch(console.error);
-      // show final results
-      setRound(roundsCount + 1);
     }
   };
 

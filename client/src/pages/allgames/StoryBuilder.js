@@ -23,7 +23,9 @@ export function StoryBuilder() {
     e.preventDefault();
     setSubmitted(true);
     const timeSpent = Math.floor((Date.now() - startRef.current)/1000);
-    axios.post('/api/results', { gameId: 14, score: text.length, timeSpent })
+    // ניצחון אם כתבו לפחות 30 תווים
+    const score = text.length >= 30 ? 1 : 0;
+    axios.post('/api/results', { gameId: 14, score, timeSpent })
       .catch(console.error);
   };
 

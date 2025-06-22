@@ -5,10 +5,6 @@ import { verifyToken } from '../middleware/authentication.js';
 
 const router = express.Router();
 
-// POST /api/streaks
-router.post('/', verifyToken, updateStreakController);
-
-// GET /api/streaks/user/:userId
-router.get('/user/:userId', verifyToken, getUserStreaksController);
+// הסרתי את כל הראוטים של streaks
 
 export default router;

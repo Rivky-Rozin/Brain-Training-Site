@@ -22,9 +22,11 @@ export default function AlternateUses() {
     if (timeLeft <= 0) {
       const timeSpent = Math.floor((Date.now() - startRef.current) / 1000);
       const token = sessionStorage.getItem('token');
+      // ניצחון אם יש לפחות 5 שימושים שונים
+      const score = uses.length >= 5 ? 1 : 0;
       axios.post('/api/results', {
         gameId: 13,
-        score: uses.length,
+        score,
         timeSpent
       }, {
         headers: { Authorization: `Bearer ${token}` }

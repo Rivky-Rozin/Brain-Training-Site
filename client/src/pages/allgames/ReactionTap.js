@@ -42,9 +42,11 @@ export default function ReactionTap() {
       setStatus('tapped');
       // send result
       const token = sessionStorage.getItem('token');
+      // ניצחון אם זמן התגובה קטן מ-500ms
+      const score = time < 500 ? 1 : 0;
       axios.post('/api/results', {
         gameId: 7,
-        score: time,
+        score,
         timeSpent: time
       }, {
         headers: { Authorization: `Bearer ${token}` }

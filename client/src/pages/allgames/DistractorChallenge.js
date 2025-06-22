@@ -44,9 +44,11 @@ export default function DistractorChallenge() {
       // send result when time runs out or game over
       const timeSpent = Math.floor((Date.now() - startRef.current) / 1000);
       const token = sessionStorage.getItem('token');
+      // ניצחון אם כל היעדים נמצאו
+      const winScore = score === targets ? 1 : 0;
       axios.post('/api/results', {
         gameId: 6,
-        score,       // number of correct clicks
+        score: winScore,
         timeSpent
       }, {
         headers: { Authorization: `Bearer ${token}` }

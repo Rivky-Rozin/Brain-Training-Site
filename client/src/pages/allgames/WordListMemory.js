@@ -29,7 +29,9 @@ export function WordListMemory() {
   useEffect(() => {
     if (phase==='done') {
       const timeSpent = Math.floor((Date.now() - startRef.current)/1000);
-      axios.post('/api/results', { gameId: 12, score: correct, timeSpent })
+      // ניצחון אם נזכרו לפחות 3 מילים
+      const score = correct >= 3 ? 1 : 0;
+      axios.post('/api/results', { gameId: 12, score, timeSpent })
         .catch(console.error);
     }
   }, [phase]);

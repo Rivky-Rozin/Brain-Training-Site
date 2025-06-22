@@ -1,4 +1,4 @@
-import { User, Password, Result, Streak } from '../models/index.js';
+import { User, Password, Result } from '../models/index.js';
 import bcrypt from 'bcrypt';
 import { generateToken } from '../middleware/authentication.js';
 import sequelize from '../db/connection.js';
@@ -140,21 +140,6 @@ export const getUserResults = async (userId) => {
         });
 
         return results;
-    } catch (error) {
-        throw error;
-    }
-};
-
-// קבלת רצפים של משתמש
-export const getUserStreaks = async (userId) => {
-    try {
-        const streaks = await Streak.findAll({
-            where: { userId },
-            include: [Game],
-            order: [['lastPlayedAt', 'DESC']]
-        });
-
-        return streaks;
     } catch (error) {
         throw error;
     }
