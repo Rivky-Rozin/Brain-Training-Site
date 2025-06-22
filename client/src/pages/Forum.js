@@ -11,6 +11,10 @@ export default function Forum() {
     const [content, setContent] = useState('');
     const [sending, setSending] = useState(false);
     const [file, setFile] = useState(null);
+    const [editingId, setEditingId] = useState(null);
+    const [editContent, setEditContent] = useState('');
+    const [editFile, setEditFile] = useState(null);
+    const [editLoading, setEditLoading] = useState(false);
     const chatRef = useRef(null);
     const user = JSON.parse(sessionStorage.getItem('user'));
 
@@ -23,7 +27,10 @@ export default function Forum() {
         if (loading) return;
         setLoading(true);
         try {
-            const res = await axios.get(`/api/messages?page=${pageToLoad}`);
+            const token = sessionStorage.getItem('token');
+            const res = await axios.get(`/api/messages?page=${pageToLoad}`,
+                token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
+            );
             const newMessages = res.data.reverse(); // הופך את הסדר לישן->חדש
             if (initial) {
                 setMessages(newMessages);
@@ -62,7 +69,9 @@ export default function Forum() {
                 user_id: user?.id,
                 content,
                 media_url,
-            });
+            },
+            sessionStorage.getItem('token') ? { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } } : undefined
+            );
             setMessages((prev) => [...prev, res.data]);
             setContent('');
             setFile(null);
@@ -73,6 +82,54 @@ export default function Forum() {
             // handle error
         }
         setSending(false);
+    };
+
+    const handleEdit = (msg) => {
+        setEditingId(msg.id);
+        setEditContent(msg.content);
+        setEditFile(null);
+    };
+
+    const handleEditCancel = () => {
+        setEditingId(null);
+        setEditContent('');
+        setEditFile(null);
+    };
+
+    const handleEditSave = async (msg) => {
+        setEditLoading(true);
+        let media_url = msg.media_url;
+        try {
+            if (editFile) {
+                const formData = new FormData();
+                formData.append('image', editFile);
+                const uploadRes = await axios.post('/api/upload-image', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                });
+                media_url = uploadRes.data.imageUrl;
+            }
+            const token = sessionStorage.getItem('token');
+            const res = await axios.put(`/api/messages/${msg.id}`, {
+                content: editContent,
+                media_url,
+            }, token ? { headers: { Authorization: `Bearer ${token}` } } : undefined);
+            setMessages((prev) => prev.map(m => m.id === msg.id ? res.data : m));
+            handleEditCancel();
+        } catch (err) {
+            // handle error
+        }
+        setEditLoading(false);
+    };
+
+    const handleDelete = async (msg) => {
+        if (!window.confirm('Are you sure you want to delete this message?')) return;
+        try {
+            const token = sessionStorage.getItem('token');
+            await axios.delete(`/api/messages/${msg.id}`, token ? { headers: { Authorization: `Bearer ${token}` } } : undefined);
+            setMessages((prev) => prev.filter(m => m.id !== msg.id));
+        } catch (err) {
+            // handle error
+        }
     };
 
     useEffect(() => {
@@ -114,15 +171,44 @@ export default function Forum() {
                             >
                                 <div className="font-semibold mb-1 flex items-center gap-2">
                                     <span>{isMe ? 'Me' : msg.user?.username || 'User'}</span>
+                                    {isMe && editingId !== msg.id && (
+                                        <>
+                                            <button onClick={() => handleEdit(msg)} className="ml-2 text-xs text-yellow-200 bg-yellow-600 rounded px-2 py-1 hover:bg-yellow-700">ערוך</button>
+                                            <button onClick={() => handleDelete(msg)} className="ml-2 text-xs text-red-200 bg-red-600 rounded px-2 py-1 hover:bg-red-700">מחק</button>
+                                        </>
+                                    )}
                                 </div>
-                                <span>{msg.content}</span>
-                                {/* הצגת מדיה */}
-                                {msg.media_url && (
-                                    msg.media_url.match(/\.(mp4|webm|ogg)$/i) ? (
-                                        <video src={msg.media_url} controls className="mt-2 max-h-48 rounded-xl" />
-                                    ) : (
-                                        <img src={msg.media_url} alt="media" className="mt-2 max-h-48 rounded-xl" />
-                                    )
+                                {editingId === msg.id ? (
+                                    <div>
+                                        <input
+                                            type="text"
+                                            className="w-full border rounded px-2 py-1 text-black mb-2"
+                                            value={editContent}
+                                            onChange={e => setEditContent(e.target.value)}
+                                            disabled={editLoading}
+                                        />
+                                        <input
+                                            type="file"
+                                            accept="image/*,video/*"
+                                            onChange={e => setEditFile(e.target.files[0])}
+                                            disabled={editLoading}
+                                            className="mb-2"
+                                        />
+                                        <button onClick={() => handleEditSave(msg)} disabled={editLoading || (!editContent.trim() && !editFile)} className="bg-green-600 text-white px-3 py-1 rounded mr-2">שמור</button>
+                                        <button onClick={handleEditCancel} disabled={editLoading} className="bg-gray-400 text-white px-3 py-1 rounded">ביטול</button>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <span>{msg.content}</span>
+                                        {/* הצגת מדיה */}
+                                        {msg.media_url && (
+                                            msg.media_url.match(/\.(mp4|webm|ogg)$/i) ? (
+                                                <video src={msg.media_url} controls className="mt-2 max-h-48 rounded-xl" />
+                                            ) : (
+                                                <img src={msg.media_url} alt="media" className="mt-2 max-h-48 rounded-xl" />
+                                            )
+                                        )}
+                                    </>
                                 )}
                                 <div className="text-xs text-gray-300 mt-2 text-right">
                                     {msg.created_at?.slice(0, 19).replace('T', ' ')}

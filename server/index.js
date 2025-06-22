@@ -9,7 +9,7 @@ import cors from 'cors';
 import sequelize from './db/connection.js';
 
 //כאן אנחנו מייבאים לשרת את ההגדרות של כל טבלה ומה יש בה
-import { User, Password, Game, Result, Streak } from './models/index.js';
+import { User, Password, Game, Result } from './models/index.js';
 
 // כל ראוט הוא קבוצה של פונקציות שמגיעות לשרת ומפעילות פעולות מסוימות
 // למשל יוזר ראוטס הא קובץ של פעולות של משתמשים
@@ -17,7 +17,7 @@ import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import gameRoutes from './routes/gameRoutes.js';
 import resultRoutes from './routes/resultRoutes.js';
-import streakRoutes from './routes/streakRoutes.js';
+//import streakRoutes from './routes/streakRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import uploadImageRoutes from './routes/uploadImageRoutes.js';
 import geminiRoutes from './routes/geminiRoutes.js';
