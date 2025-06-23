@@ -43,70 +43,164 @@ export default function SimpleLogicGrid() {
     }).catch(err => alert(err.response?.data?.message || err.message || 'שגיאה בשליחת תוצאה'));
     setResult(ok);
   };
-
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-3xl font-extrabold mb-4 text-center text-teal-700 drop-shadow">Simple Logic Grid</h1>
-      <button
-        onClick={() => setShowInstructions(s => !s)}
-        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px', boxShadow: '0 2px 8px #b2d8d8' }}
-      >
-        {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
-      </button>
-      {showInstructions && (
-        <div style={{ background: '#e6f7f7', color: '#222', borderRadius: '12px', padding: '12px', marginBottom: '18px', fontSize: '1.05rem', boxShadow: '0 1px 4px #b2d8d8', whiteSpace: 'pre-line' }}>
-          {instructions}
+    <div className="min-h-screen p-6" style={{ backgroundColor: '#FDFDFD' }}>
+      <div className="max-w-3xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold mb-2" style={{ color: '#222' }}>
+            Simple Logic Grid
+          </h1>
+          <p style={{ color: '#5E9A92' }}>
+            Basic level - Match each person with their favorite color
+          </p>
         </div>
-      )}
-      <ul className="list-disc list-inside mb-6 bg-white rounded-2xl shadow-lg border border-teal-100 px-8 py-6 text-lg font-semibold text-teal-800 max-w-md mx-auto">
-        {clues.map((c, idx) => <li key={idx} className="mb-1">{c}</li>)}
-      </ul>
-      <div className="overflow-x-auto mb-6">
-      <table className="table-auto border-separate border-spacing-0 mx-auto rounded-xl shadow-md bg-white">
-        <thead>
-          <tr>
-            <th className="border-b-2 border-teal-300 p-2 bg-teal-50"></th>
-            {colors.map(color => (
-              <th key={color} className="border-b-2 border-teal-300 p-2 text-center bg-teal-50 text-teal-800 font-bold">{color}</th>
+
+        {/* Clues */}
+        <div className="rounded-lg shadow p-6 mb-8" style={{ 
+          backgroundColor: 'white', 
+          border: '1px solid #CDE1DB' 
+        }}>
+          <h2 className="text-xl font-semibold mb-4" style={{ color: '#5E9A92' }}>
+            Clues
+          </h2>
+          <ul className="space-y-2">
+            {clues.map((c, i) => (
+              <li key={i} className="flex items-start">
+                <span 
+                  className="rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 flex-shrink-0 text-white"
+                  style={{ backgroundColor: '#7CC3B6' }}
+                >
+                  {i + 1}
+                </span>
+                <span style={{ color: '#222' }}>{c}</span>
+              </li>
             ))}
-          </tr>
-        </thead>
-        <tbody>
-          {people.map((person, i) => (
-            <tr key={person}>
-              <td className="border-r-2 border-teal-200 p-2 font-semibold bg-teal-50 text-teal-700">{person}</td>
-              {colors.map((_, j) => {
-                const state = cells[`${i}-${j}`];
-                const mark = state === true ? '✔' : state === false ? '✖' : '';
-                let bg = 'bg-gray-100';
-                let border = 'border border-gray-200';
-                if (state === true) { bg = 'bg-green-200'; border = 'border-2 border-green-400'; }
-                else if (state === false) { bg = 'bg-red-100'; border = 'border-2 border-red-300'; }
-                return (
-                  <td
-                    key={j}
-                    className={`p-4 text-center cursor-pointer transition-colors duration-200 font-bold text-xl ${bg} ${border} rounded-lg hover:ring-2 hover:ring-teal-300`}
-                    onClick={() => handleCellClick(i, j)}
-                  >{mark}</td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          </ul>
+        </div>
+
+        {/* Grid */}
+        <div className="flex justify-center mb-8">
+          <div className="rounded-lg shadow p-6" style={{ 
+            backgroundColor: 'white', 
+            border: '1px solid #CDE1DB' 
+          }}>
+            <h3 className="text-lg font-semibold mb-4 text-center" style={{ color: '#5E9A92' }}>
+              Color Preferences
+            </h3>
+            <table className="mx-auto">
+              <thead>
+                <tr>
+                  <th className="p-3"></th>
+                  {colors.map(color => (
+                    <th 
+                      key={color} 
+                      className="p-3 text-center font-medium border-b-2" 
+                      style={{ 
+                        color: '#5E9A92',
+                        borderColor: '#CDE1DB' 
+                      }}
+                    >
+                      {color}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {people.map((person, i) => (
+                  <tr key={person}>
+                    <td 
+                      className="p-3 font-medium border-r-2" 
+                      style={{ 
+                        color: '#5E9A92',
+                        borderColor: '#CDE1DB' 
+                      }}
+                    >
+                      {person}
+                    </td>
+                    {colors.map((_, j) => {
+                      const key = `${i}-${j}`;
+                      const state = cells[key];
+                      const disp = state === true ? '✓' : state === false ? '✗' : '';
+                      let cellStyle = {
+                        backgroundColor: '#E3F2F1',
+                        borderColor: '#CDE1DB',
+                        color: '#5E9A92'
+                      };
+                      
+                      if (state === true) {
+                        cellStyle = {
+                          backgroundColor: '#7CC3B6',
+                          borderColor: '#5E9A92',
+                          color: 'white'
+                        };
+                      } else if (state === false) {
+                        cellStyle = {
+                          backgroundColor: '#EB5757',
+                          borderColor: '#EB5757',
+                          color: 'white'
+                        };
+                      }
+                      
+                      return (
+                        <td key={j} className="p-3 text-center">
+                          <button
+                            onClick={() => handleCellClick(i, j)}
+                            className="w-16 h-16 border-2 rounded cursor-pointer transition-all font-bold text-xl flex items-center justify-center hover:opacity-80"
+                            style={cellStyle}
+                          >
+                            {disp}
+                          </button>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Control Buttons */}
+        <div className="flex justify-center space-x-4 mb-8">
+          <button 
+            onClick={validate} 
+            className="px-6 py-2 rounded-lg font-medium transition-all text-white hover:opacity-90"
+            style={{ backgroundColor: '#7CC3B6' }}
+          >
+            Check Solution
+          </button>
+          <button 
+            onClick={() => {
+              const init = {};
+              people.forEach((_, i) =>
+                colors.forEach((_, j) => init[`${i}-${j}`] = null)
+              );
+              setCells(init);
+              setResult(null);
+              startRef.current = Date.now();
+            }}
+            className="px-6 py-2 rounded-lg font-medium transition-all text-white hover:opacity-90"
+            style={{ backgroundColor: '#5E9A92' }}
+          >
+            Reset
+          </button>
+        </div>
+
+        {/* Result Message */}
+        {result !== null && (
+          <div 
+            className="text-center p-4 rounded-lg font-medium border"
+            style={{
+              backgroundColor: result ? '#7CC3B6' : '#EB5757',
+              color: 'white',
+              borderColor: result ? '#5E9A92' : '#EB5757'
+            }}
+          >
+            {result ? '✅ Correct! Well done!' : '❌ Try again!'}
+          </div>
+        )}
       </div>
-      <button
-        onClick={validate}
-        className="bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-xl font-semibold shadow mt-6"
-      >
-        Check
-      </button>
-      {result === true && (
-        <p className="mt-6 text-green-700 font-bold text-xl">Correct!</p>
-      )}
-      {result === false && (
-        <p className="mt-6 text-red-700 font-bold text-xl">Incorrect!</p>
-      )}
     </div>
   );
 }

@@ -1,7 +1,6 @@
-// src/pages/allgames/LogicGridMedium.jsx
+// src/pages/allgames/LogicGrid.js
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
-import { FaInfoCircle } from 'react-icons/fa';
 
 // Medium Logic Grid: 3x3 with People, Pets, and Favorite Drinks
 const people = ['Alice', 'Bob', 'Carol'];
@@ -26,7 +25,7 @@ const solution = {
 // States: null = undecided, true = yes, false = no
 const STATES = [null, true, false];
 
-export default function LogicGridMedium() {
+export default function LogicGrid() {
   const startRef = useRef(Date.now());
 
   // Initialize cells state: person-pet and person-drink
@@ -80,12 +79,11 @@ export default function LogicGridMedium() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-3xl font-extrabold mb-4 text-center text-teal-700 drop-shadow">Medium Logic Grid</h1>
-      <button
+      <h1 className="text-3xl font-extrabold mb-4 text-center text-teal-700 drop-shadow">Medium Logic Grid</h1>      <button
         onClick={() => setShowInstructions(s => !s)}
         style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px', boxShadow: '0 2px 8px #b2d8d8', display: 'flex', alignItems: 'center', gap: '8px' }}
       >
-        <FaInfoCircle style={{ marginRight: 6, fontSize: '1.2em' }} />
+        <span style={{ marginRight: 6, fontSize: '1.2em' }}>ℹ️</span>
         {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
       </button>
       {showInstructions && (

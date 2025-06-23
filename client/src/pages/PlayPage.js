@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 // import the game components
 import SimpleLogicGrid from './allgames/SimpleLogicGrid';      // id = 1
-import LogicGrid from './allgames/LogicGrid';            // id = 2
+import LogicGridMedium from './allgames/LogicGridMedium';      // id = 2
 import AdvancedLogicGrid from './allgames/AdvancedLogicGrid';    // id = 3
 import FocusSquares from './allgames/FocusSquares';         // id = 4
 import StroopTest from './allgames/StroopTest';           // id = 5
@@ -33,9 +33,8 @@ export default function PlayPage() {
 
     switch (gameId) {
         case 1:
-            return <SimpleLogicGrid key={gameId} />;
-        case 2:
-            return <LogicGrid key={gameId} />;
+            return <SimpleLogicGrid key={gameId} />;        case 2:
+            return <LogicGridMedium key={gameId} />;
         case 3:
             return <AdvancedLogicGrid key={gameId} />;
         case 4:
