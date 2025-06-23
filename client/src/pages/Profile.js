@@ -137,10 +137,13 @@ const Profile = () => {
     (reactionTimeData.reduce((a, b) => a + parseFloat(b.reactionTime), 0) / reactionTimeData.length).toFixed(2) : 0;
 
   // עיבוד ממוצע יומי לאחוזי הצלחה
+  // נניח ש-score הוא ניקוד מוחלט, ונחשב את האחוז מתוך ניקוד מקסימלי אפשרי (למשל 10)
+  const MAX_SCORE = 10; // שנה כאן אם הניקוד המקסימלי שונה
   const dailySuccessRateMap = results.reduce((acc, r) => {
     const date = new Date(r.completedAt).toLocaleDateString();
     if (!acc[date]) acc[date] = [];
-    acc[date].push(r.score);
+    // נחשב אחוז הצלחה לכל תוצאה
+    acc[date].push((r.score / MAX_SCORE) * 100);
     return acc;
   }, {});
   const successRateData = Object.entries(dailySuccessRateMap).map(([date, scores]) => ({
