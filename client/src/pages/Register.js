@@ -58,11 +58,10 @@ const Register = () => {
             sessionStorage.setItem('token', response.data.token);
             sessionStorage.setItem('user', JSON.stringify(response.data.user));
             setUser(response.data.user); // עדכון ה-user בקונטקסט
-
-            // Redirect to home page
             navigate('/');
         } catch (err) {
-            setError(err.response?.data?.message || 'Registration failed');
+            setError(err.response?.data?.message || err.message || 'Registration failed');
+            alert(err.response?.data?.message || err.message || 'Registration failed');
         } finally {
             setLoading(false);
         }

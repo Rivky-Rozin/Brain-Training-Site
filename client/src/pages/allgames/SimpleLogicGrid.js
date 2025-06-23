@@ -38,7 +38,7 @@ export default function SimpleLogicGrid() {
     const token = sessionStorage.getItem('token');
     axios.post('/api/results', { gameId: 1, score: ok ? 1 : 0, timeSpent }, {
       headers: { Authorization: `Bearer ${token}` }
-    }).catch(console.error);
+    }).catch(err => alert(err.response?.data?.message || err.message || 'שגיאה בשליחת תוצאה'));
     setResult(ok);
   };
 

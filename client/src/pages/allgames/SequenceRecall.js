@@ -38,7 +38,7 @@ export function SequenceRecall() {
       const score = message === '✅ Correct!' ? 1 : 0;
       const token = sessionStorage.getItem('token');
       axios.post('/api/results', { gameId: 11, score, timeSpent }, { headers: { Authorization: `Bearer ${token}` } })
-        .catch(console.error);
+        .catch(err => alert(err.response?.data?.message || err.message || 'שגיאה בשליחת תוצאה'));
     }
   }, [phase]);
 

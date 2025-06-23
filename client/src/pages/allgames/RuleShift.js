@@ -36,7 +36,7 @@ export default function RuleShift() {
       timeSpent
     }, {
       headers: { Authorization: `Bearer ${token}` }
-    }).catch(console.error);
+    }).catch(err => alert(err.response?.data?.message || err.message || 'שגיאה בשליחת תוצאה'));
   };
 
   // next pattern
