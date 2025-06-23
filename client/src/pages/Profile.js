@@ -239,14 +239,7 @@ const Profile = () => {
           onChange={handleProfileImageChange}
         />
         <div style={{ marginTop: 8 }}>
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={uploading}
-            style={{ padding: '6px 16px', background: '#8884d8', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 500 }}
-          >
-            {uploading ? 'Uploading...' : 'Change Profile Picture'}
-          </button>
+
         </div>
         {uploading && <div className="uploading-overlay">Uploading...</div>}
       </div>
@@ -363,7 +356,7 @@ const Profile = () => {
               </tr>
             ))}
             {results.length > 0 && (
-              <tr style={{ fontWeight: 'bold', background: '#f7f7f7' }}>
+              <tr style={{ fontWeight: 'bold' }}>
                 <td>Average</td>
                 <td>{avgScore}</td>
                 <td>{avgTimeSpent}s</td>

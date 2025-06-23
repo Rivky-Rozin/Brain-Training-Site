@@ -120,7 +120,7 @@ const AdminDashboard = () => {
     if (error) return <div className="p-8 text-red-600">{error}</div>;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-8">
+        <div className="min-h-screen p-8">
             <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg p-8 border border-blue-100">
                 <h1 className="text-3xl font-bold mb-8 text-blue-800 text-center drop-shadow">Admin Dashboard</h1>
 

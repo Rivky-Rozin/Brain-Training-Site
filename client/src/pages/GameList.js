@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import './GameList.css';
 
 const categoryNames = {
   1: 'Analytical Thinking',
@@ -12,8 +13,23 @@ const categoryNames = {
   6: 'Adaptive Thinking'
 };
 
-// Generic icon for games
-const gameIcon = '🎮';
+const cardColors = [
+  '#C9E5E5'  // Light Aqua Turquoise
+];
+
+const gameImages = [
+  require('../assets/styles/7.png'),
+  require('../assets/styles/8.png'),
+  require('../assets/styles/9.png'),
+  require('../assets/styles/10.png'),
+  require('../assets/styles/11.png'),
+  require('../assets/styles/12.png'),
+  require('../assets/styles/1.png'),
+  require('../assets/styles/2.png'),
+  require('../assets/styles/3.png'),
+  require('../assets/styles/4.png'),
+  require('../assets/styles/5.png'),
+];
 
 export default function GameList() {
   const { category } = useParams();
@@ -32,8 +48,8 @@ export default function GameList() {
         const list = Array.isArray(data)
           ? data
           : Array.isArray(data.games)
-          ? data.games
-          : [];
+            ? data.games
+            : [];
         setGames(list);
       } catch {
         setError('Error loading games');
@@ -44,10 +60,10 @@ export default function GameList() {
   }, [category]);
 
   if (loading) return <p className="text-center py-8">Loading games…</p>;
-  if (error)   return <p className="text-center py-8 text-red-500">{error}</p>;
+  if (error) return <p className="text-center py-8 text-red-500">{error}</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
+    <div className="game-list-container">
       <div className="container mx-auto px-4">
         <Link
           to="/games"
@@ -55,67 +71,44 @@ export default function GameList() {
         >
           ← Back to categories
         </Link>
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">
+        <h1 className="game-list-title">
           {category
             ? `Games in ${categoryNames[category]}`
             : 'All Games'}
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {games.map(game => (
+          {games.map((game, idx) => (
             <div
               key={game.id}
-              className="group relative w-full h-64"
-              style={{ perspective: '1000px' }}
+              className="game-card"
+              style={{ backgroundColor: cardColors[idx % cardColors.length] }}
             >
-              <div
-                className="relative w-full h-full transition-transform duration-500"
-                style={{ transformStyle: 'preserve-3d' }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.transform = 'rotateY(180deg)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.transform = 'rotateY(0deg)';
-                }}
-              >
-                {/* Front Face */}
-                <div
-                  className="absolute inset-0 bg-white rounded-xl shadow-lg flex flex-col items-center justify-center p-6"
-                  style={{ backfaceVisibility: 'hidden' }}
-                >
-                  <div className="text-5xl mb-4">{gameIcon}</div>
-                  <h3 className="text-2xl font-bold text-gray-800">
-                    {game.name}
-                  </h3>
-                </div>
 
-                {/* Back Face */}
-                <div
-                  className="absolute inset-0 bg-gray-800 text-white rounded-xl shadow-lg flex flex-col justify-between p-6"
-                  style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-                >
-                  <div>
-                    <h4 className="text-xl font-semibold mb-2">Description</h4>
-                    <p className="mb-4 text-gray-200 text-sm">
-                      {game.description}
-                    </p>
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="font-semibold">Difficulty:</span>
-                      <span>{['Easy','Medium','Hard'][game.difficulty - 1]}</span>
-                    </div>
-                  </div>
-                  <Link
-                    to={`/play/${game.id}`}
-                    className="bg-blue-500 text-white text-center px-4 py-2 rounded hover:bg-blue-600 transition"
-                  >
-                    Start Game
-                  </Link>
-                </div>
+              <img
+                src={gameImages[idx % gameImages.length]}
+                alt="game icon"
+                className="game-card-img"
+              />
+              <h3 className="game-card-title">{game.name}</h3>
+              <div className="game-card-desc">
+                {game.description && game.description.trim() !== ''
+                  ? game.description
+                  : `No description available for this game. Try it out and discover how it can boost your brain skills!`}
               </div>
+              <div className="game-card-difficulty">
+                Difficulty: {['Easy','Medium','Hard'][game.difficulty - 1]}
+              </div>
+              <Link
+                to={`/play/${game.id}`}
+                className="game-card-btn"
+              >
+                Start Game
+              </Link>
             </div>
           ))}
-        </div>
       </div>
     </div>
+    </div >
   );
 }

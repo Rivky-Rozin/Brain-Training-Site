@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
+import './Forum.css';
+import editIcon from '../assets/styles/edit.png';
+import deleteIcon from '../assets/styles/delete.png';
+import sendIcon from '../assets/styles/send.svg';
+import bgImg from '../assets/styles/beckground.png'; // אפשר להחליף לכל תמונה אחרת
 
 const PAGE_SIZE = 20;
 
@@ -15,6 +20,7 @@ export default function Forum() {
     const [editContent, setEditContent] = useState('');
     const [editFile, setEditFile] = useState(null);
     const [editLoading, setEditLoading] = useState(false);
+    const [actionsOpenId, setActionsOpenId] = useState(null);
     const chatRef = useRef(null);
     const user = JSON.parse(sessionStorage.getItem('user'));
 
@@ -28,7 +34,8 @@ export default function Forum() {
         setLoading(true);
         try {
             const token = sessionStorage.getItem('token');
-            const res = await axios.get(`/api/messages?page=${pageToLoad}`,
+            const res = await axios.get(
+                `/api/messages?page=${pageToLoad}`,
                 token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
             );
             const newMessages = res.data.reverse(); // הופך את הסדר לישן->חדש
@@ -144,13 +151,26 @@ export default function Forum() {
     }, [messages.length === PAGE_SIZE]);
 
     return (
-        <div className="fixed inset-0 flex flex-col bg-gradient-to-br from-blue-50 to-blue-200 min-h-screen">
-            <h2 className="text-3xl font-bold mb-6 text-center text-blue-800 drop-shadow mt-8">Game Forum Chat</h2>
+        <div className="forum-bg min-h-screen flex flex-col" style={{ alignItems:'center', minHeight:'100vh' }}>
+            <h2 className="forum-title">Game Forum Chat</h2>
             <div
                 ref={chatRef}
-                className="flex-1 overflow-y-auto border rounded-lg mx-auto mb-4 bg-white shadow-lg p-6 w-full max-w-3xl"
+                className="forum-chat-box"
+                style={{
+                    width: '850px',
+                    maxWidth: '98vw',
+                    height: '420px',
+                    minHeight: '420px',
+                    maxHeight: '420px',
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                    background: '#fff',
+                    borderRadius: '1.2rem',
+                    boxShadow: '0 2px 12px #7CC3B622',
+                    padding: '1.1rem 0.5rem',
+                    margin: '0 auto 1.5rem auto'
+                }}
                 onScroll={handleScroll}
-                style={{ direction: 'ltr', minHeight: '60vh' }}
             >
                 {messages.map((msg) => {
                     const isMe = msg.user?.id === user?.id;
@@ -158,94 +178,109 @@ export default function Forum() {
                     return (
                         <div
                             key={msg.id}
-                            className={`mb-4 flex items-end ${isMe ? 'flex-row-reverse' : 'flex-row'}`}
+                            className={`forum-message-row ${isMe ? 'forum-message-me' : 'forum-message-other'}`}
+                            style={{marginBottom:'1.1rem'}}
                         >
                             {/* תמונת פרופיל */}
                             <img
                                 src={profileImg}
                                 alt="profile"
-                                className="w-12 h-12 rounded-full border-2 border-blue-300 object-cover mx-3 shadow"
+                                className="forum-profile-img"
                             />
+                            {/* שם השולח + שעה באותה שורה, צמוד לפרופיל */}
+                            {!isMe && (
+                              <div className="forum-message-meta" style={{display:'flex',flexDirection:'row',alignItems:'center',gap:'0.5rem',marginBottom:'0.2rem',marginRight:'0.1rem'}}>
+                                <span className="forum-message-username" style={{color:'#444a55',fontWeight:600}}>{msg.user?.username || 'User'}</span>
+                                <span className="forum-message-time">{msg.created_at ? new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ''}</span>
+                              </div>
+                            )}
                             <div
-                                className={`rounded-2xl px-4 py-3 max-w-[70%] break-words shadow-md ${
-                                    isMe
-                                        ? 'bg-blue-500 text-white ml-2 self-end'
-                                        : 'bg-gray-100 text-gray-900 mr-2 self-end'
-                                }`}
-                                style={{ textAlign: isMe ? 'right' : 'left' }}
+                                className={`forum-bubble ${isMe ? 'forum-bubble-me' : 'forum-bubble-other'}`}
+                                style={{marginLeft:isMe?0:6,marginRight:isMe?6:0,display:'flex',alignItems:'center',position:'relative',width:'fit-content',minWidth:0,maxWidth:'80vw',padding:'0.5rem 0.9rem',borderRadius:'1.2rem 1.2rem 1.2rem 0.5rem',boxShadow:'none',background:isMe?'#7CC3B6':'#f3f6fa',color:isMe?'#fff':'#222',border:'none',direction:isMe?'rtl':'ltr',justifyContent:isMe?'flex-end':'flex-start'}}
                             >
-                                <div className="font-semibold mb-1 flex items-center gap-2">
-                                    <span>{isMe ? 'Me' : msg.user?.username || 'User'}</span>
-                                    {isMe && editingId !== msg.id && (
-                                        <>
-                                            <button onClick={() => handleEdit(msg)} className="ml-2 text-xs text-yellow-200 bg-yellow-600 rounded px-2 py-1 hover:bg-yellow-700">ערוך</button>
-                                            <button onClick={() => handleDelete(msg)} className="ml-2 text-xs text-red-200 bg-red-600 rounded px-2 py-1 hover:bg-red-700">מחק</button>
-                                        </>
-                                    )}
-                                </div>
-                                {editingId === msg.id ? (
-                                    <div>
-                                        <input
-                                            type="text"
-                                            className="w-full border rounded px-2 py-1 text-black mb-2"
-                                            value={editContent}
-                                            onChange={e => setEditContent(e.target.value)}
-                                            disabled={editLoading}
-                                        />
-                                        <input
-                                            type="file"
-                                            accept="image/*,video/*"
-                                            onChange={e => setEditFile(e.target.files[0])}
-                                            disabled={editLoading}
-                                            className="mb-2"
-                                        />
-                                        <button onClick={() => handleEditSave(msg)} disabled={editLoading || (!editContent.trim() && !editFile)} className="bg-green-600 text-white px-3 py-1 rounded mr-2">שמור</button>
-                                        <button onClick={handleEditCancel} disabled={editLoading} className="bg-gray-400 text-white px-3 py-1 rounded">ביטול</button>
-                                    </div>
-                                ) : (
-                                    <>
-                                        <span>{msg.content}</span>
-                                        {/* הצגת מדיה */}
-                                        {msg.media_url && (
-                                            msg.media_url.match(/\.(mp4|webm|ogg)$/i) ? (
-                                                <video src={msg.media_url} controls className="mt-2 max-h-48 rounded-xl" />
-                                            ) : (
-                                                <img src={msg.media_url} alt="media" className="mt-2 max-h-48 rounded-xl" />
-                                            )
+                                {/* תפריט אקשן - שלוש נקודות */}
+                                {isMe && editingId !== msg.id && (
+                                    <div style={{position:'absolute',top:'0.2rem',right:'0.3rem',display:'flex',alignItems:'center'}}>
+                                        <button
+                                            className="forum-actions-menu-btn"
+                                            style={{marginRight:0,marginLeft:'0.7rem',color:'#fff',background:'none'}}
+                                            onClick={e => {
+                                                e.stopPropagation();
+                                                setActionsOpenId(actionsOpenId === msg.id ? null : msg.id);
+                                            }}
+                                            aria-label="Actions"
+                                        >
+                                            <span style={{fontSize:'1.3rem',color:'#fff',fontWeight:'bold',lineHeight:1}}>&#8942;</span>
+                                        </button>
+                                        {actionsOpenId === msg.id && (
+                                            <div className="forum-actions-dropdown" style={{right:0,left:'unset',minWidth:'120px', whiteSpace: 'nowrap'}} onClick={e => e.stopPropagation()}>
+                                                <button onClick={() => { setActionsOpenId(null); handleEdit(msg); }} className="forum-actions-dropdown-btn" style={{fontSize:'0.98rem',padding:'0.2rem 0.7rem',whiteSpace:'nowrap',display:'flex',alignItems:'center'}}>
+                                                    <img src={editIcon} alt="EDIT" style={{width:18,height:18,marginLeft:'0.3rem'}} /> EDIT
+                                                </button>
+                                                <button onClick={() => { setActionsOpenId(null); handleDelete(msg); }} className="forum-actions-dropdown-btn" style={{fontSize:'0.98rem',padding:'0.2rem 0.7rem',whiteSpace:'nowrap',display:'flex',alignItems:'center'}}>
+                                                    <img src={deleteIcon} alt="DELETE" style={{width:18,height:18,marginLeft:'0.3rem'}} /> DELETE
+                                                </button>
+                                            </div>
                                         )}
-                                    </>
+                                    </div>
                                 )}
-                                <div className="text-xs text-gray-300 mt-2 text-right">
-                                    {msg.created_at?.slice(0, 19).replace('T', ' ')}
-                                </div>
+                                {/* עריכת הודעה */}
+                                {editingId === msg.id ? (
+                                  <form onSubmit={e => {e.preventDefault(); handleEditSave(msg);}} style={{display:'flex',alignItems:'center',width:'100%'}}>
+                                    <input
+                                      type="text"
+                                      value={editContent}
+                                      onChange={e => setEditContent(e.target.value)}
+                                      className="forum-edit-input"
+                                      style={{flex:1,minWidth:0,padding:'0.3rem 0.6rem',borderRadius:'0.7rem',border:'1px solid #CDE1DB',fontSize:'1rem',marginLeft:'0.5rem'}}
+                                      autoFocus
+                                      disabled={editLoading}
+                                      placeholder={msg.content}
+                                    />
+                                    <button type="submit" disabled={editLoading} style={{background:'#7CC3B6',color:'#fff',border:'none',borderRadius:'0.5rem',padding:'0.2rem 0.7rem',marginLeft:'0.2rem',fontWeight:600,cursor:'pointer'}}>Save</button>
+                                    <button type="button" onClick={handleEditCancel} disabled={editLoading} style={{background:'#eee',color:'#222',border:'none',borderRadius:'0.5rem',padding:'0.2rem 0.7rem',marginLeft:'0.2rem',fontWeight:600,cursor:'pointer'}}>Cancel</button>
+                                  </form>
+                                ) : (
+                                  <span className="forum-message-text" style={{flex:1,textAlign:isMe?'right':'left',fontSize:'1rem',fontWeight:500,marginRight:isMe?'.7rem':0}}>{msg.content}</span>
+                                )}
+                                {/* הצגת מדיה */}
+                                {msg.media_url && (
+                                    msg.media_url.match(/\.(mp4|webm|ogg)$/i) ? (
+                                        <video src={msg.media_url} controls className="mt-2 max-h-32 rounded-xl" style={{maxWidth:'120px'}} />
+                                    ) : (
+                                        <img src={msg.media_url} alt="media" className="mt-2 max-h-32 rounded-xl" style={{maxWidth:'120px'}} />
+                                    )
+                                )}
                             </div>
                         </div>
                     );
                 })}
                 {loading && <div className="text-center text-gray-400">Loading...</div>}
             </div>
-            <form onSubmit={handleSend} className="flex gap-3 justify-center items-center w-full max-w-3xl mx-auto mb-8">
+            <form onSubmit={handleSend} className="forum-send-form">
                 <input
                     type="text"
-                    className="flex-1 border rounded-full px-4 py-3 shadow focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="forum-send-input"
                     placeholder="Type your message..."
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     disabled={sending}
                 />
-                <input
-                    type="file"
-                    accept="image/*,video/*"
-                    onChange={e => setFile(e.target.files[0])}
-                    disabled={sending}
-                    className="border rounded px-2 py-2 bg-white shadow"
-                />
+                <label className="forum-send-file-label">
+                    <input
+                        type="file"
+                        accept="image/*,video/*"
+                        onChange={e => setFile(e.target.files[0])}
+                        disabled={sending}
+                    />
+                    <img src={editIcon} alt="attach" />
+                </label>
                 <button
                     type="submit"
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow font-bold transition disabled:opacity-50"
+                    className="forum-send-btn"
                     disabled={sending || (!content.trim() && !file)}
                 >
-                    Send
+                    <img src={sendIcon} alt="send" />
                 </button>
             </form>
         </div>
