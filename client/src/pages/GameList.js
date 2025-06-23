@@ -68,9 +68,35 @@ export default function GameList() {
       <div className="container mx-auto px-4">
         <Link
           to="/games"
-          className="text-blue-600 underline mb-4 inline-block"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            background: '#e6f2f0',
+            color: '#2186ae',
+            border: '1.5px solid #b2dbe6',
+            borderRadius: '2rem',
+            padding: '0.45rem 1.2rem 0.45rem 1.1rem',
+            fontWeight: 600,
+            fontSize: '1.08rem',
+            boxShadow: '0 2px 8px #7CC3B622',
+            textDecoration: 'none',
+            marginBottom: '1.2rem',
+            transition: 'background 0.18s, color 0.18s, border 0.18s',
+          }}
+          onMouseOver={e => {
+            e.currentTarget.style.background = '#c9e5e5';
+            e.currentTarget.style.color = '#176b87';
+            e.currentTarget.style.border = '1.5px solid #7CC3B6';
+          }}
+          onMouseOut={e => {
+            e.currentTarget.style.background = '#e6f2f0';
+            e.currentTarget.style.color = '#2186ae';
+            e.currentTarget.style.border = '1.5px solid #b2dbe6';
+          }}
         >
-          ← Back to categories
+          <span style={{fontSize:'1.25em',marginRight:'-0.2em'}}>←</span>
+          Back to categories
         </Link>
         <h1 className="game-list-title">
           {category
