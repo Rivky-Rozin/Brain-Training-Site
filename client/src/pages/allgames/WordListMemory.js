@@ -9,6 +9,8 @@ export function WordListMemory() {
   const [phase, setPhase] = useState('show');
   const [inputList, setInputList] = useState('');
   const [correct, setCorrect] = useState(0);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const instructions = `Goal: Remember words from a list.\nHow to play:\n- Words are shown quickly.\n- Then you are tested on which words appeared and which did not.`;
 
   useEffect(()=>{ start(); }, []);
 
@@ -48,6 +50,17 @@ export function WordListMemory() {
   return (
     <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center">
       <h1 className="text-3xl font-bold mb-4">Word List Memory</h1>
+      <button
+        onClick={() => setShowInstructions(s => !s)}
+        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px' }}
+      >
+        {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
+      </button>
+      {showInstructions && (
+        <div style={{ background: '#e6f7f7', color: '#222', borderRadius: '12px', padding: '12px', marginBottom: '18px', fontSize: '1.05rem', boxShadow: '0 1px 4px #b2d8d8', whiteSpace: 'pre-line' }}>
+          {instructions}
+        </div>
+      )}
       {phase==='show'&&(
         <ul className="mb-4 list-disc list-inside">
           {list.map((w,i)=><li key={i}>{w}</li>)}

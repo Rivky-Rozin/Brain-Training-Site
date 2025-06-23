@@ -12,6 +12,8 @@ export function ColorMatchSpeed() {
   const [input, setInput] = useState('');
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const instructions = `Goal: Test reactivity and focus against cognitive conflict.\nHow to play:\n- A color name (e.g., "Blue") is shown in a non-matching color (e.g., red).\n- Click according to the color, not the text.`;
 
   // kick off the first round and timer
   useEffect(() => {
@@ -56,6 +58,17 @@ export function ColorMatchSpeed() {
   return (
     <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center">
       <h1 className="text-3xl font-bold mb-4">Color Match Speed</h1>
+      <button
+        onClick={() => setShowInstructions(s => !s)}
+        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px' }}
+      >
+        {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
+      </button>
+      {showInstructions && (
+        <div style={{ background: '#e6f7f7', color: '#222', borderRadius: '12px', padding: '12px', marginBottom: '18px', fontSize: '1.05rem', boxShadow: '0 1px 4px #b2d8d8', whiteSpace: 'pre-line' }}>
+          {instructions}
+        </div>
+      )}
       <div className="text-6xl mb-4" style={{ color: target.color }}>
         {target.shape}
       </div>

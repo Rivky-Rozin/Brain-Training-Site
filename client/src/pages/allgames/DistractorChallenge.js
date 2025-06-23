@@ -13,6 +13,8 @@ export default function DistractorChallenge() {
   const [score, setScore]   = useState(0);
   const [timeLeft, setTime] = useState(timeLimit);
   const [over, setOver]     = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const instructions = `Goal: Identify the correct item among distractions.\nHow to play:\n- Many items appear, some confusing.\n- Choose the target (e.g., a unique letter or color).\n- More distractions and items as time goes on.`;
 
   // reset grid & state
   const reset = () => {
@@ -77,6 +79,17 @@ export default function DistractorChallenge() {
   return (
     <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center">
       <h1 className="text-3xl font-bold mb-4">Distractor Challenge</h1>
+      <button
+        onClick={() => setShowInstructions(s => !s)}
+        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px' }}
+      >
+        {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
+      </button>
+      {showInstructions && (
+        <div style={{ background: '#e6f7f7', color: '#222', borderRadius: '12px', padding: '12px', marginBottom: '18px', fontSize: '1.05rem', boxShadow: '0 1px 4px #b2d8d8', whiteSpace: 'pre-line' }}>
+          {instructions}
+        </div>
+      )}
       <p className="mb-4">Time: {timeLeft}s | Score: {score}/{targets}</p>
 
       <div

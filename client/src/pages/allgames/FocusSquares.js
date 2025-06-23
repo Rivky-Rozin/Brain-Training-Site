@@ -13,6 +13,8 @@ export default function FocusSquares() {
   const [score, setScore]     = useState(0);
   const [timeLeft, setTimeLeft] = useState(timeLimit);
   const [gameOver, setGameOver] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const instructions = `Goal: Find squares that reappear after some time.\nHow to play:\n- Several squares are shown on the screen.\n- After a pause, they reappear – identify which stayed the same or changed.`;
 
   // Initialize grid
   const resetGame = () => {
@@ -73,6 +75,17 @@ export default function FocusSquares() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start py-8 bg-gray-100">
       <h1 className="text-3xl font-bold mb-4">Focus Squares</h1>
+      <button
+        onClick={() => setShowInstructions(s => !s)}
+        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px' }}
+      >
+        {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
+      </button>
+      {showInstructions && (
+        <div style={{ background: '#e6f7f7', color: '#222', borderRadius: '12px', padding: '12px', marginBottom: '18px', fontSize: '1.05rem', boxShadow: '0 1px 4px #b2d8d8', whiteSpace: 'pre-line' }}>
+          {instructions}
+        </div>
+      )}
       <div className="mb-4">
         <span className="mr-6">Time: {timeLeft}s</span>
         <span>Score: {score}/{totalTargets}</span>

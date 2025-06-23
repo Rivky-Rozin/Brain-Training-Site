@@ -18,6 +18,8 @@ export default function SimpleLogicGrid() {
     return init;
   });
   const [result, setResult] = useState(null);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const instructions = `Goal: Solve a simple logic puzzle using clues.\nHow to play:\n- An empty table and a list of clues appear.\n- Drag or mark √ or ✗ in the appropriate cells according to logic.\n- The goal: place each item in the correct spot in the table.`;
 
   const STATES = [null, true, false];
 
@@ -45,6 +47,17 @@ export default function SimpleLogicGrid() {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <h1 className="text-3xl font-bold mb-4">Simple Logic Grid</h1>
+      <button
+        onClick={() => setShowInstructions(s => !s)}
+        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px' }}
+      >
+        {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
+      </button>
+      {showInstructions && (
+        <div style={{ background: '#e6f7f7', color: '#222', borderRadius: '12px', padding: '12px', marginBottom: '18px', fontSize: '1.05rem', boxShadow: '0 1px 4px #b2d8d8', whiteSpace: 'pre-line' }}>
+          {instructions}
+        </div>
+      )}
       <ul className="list-disc list-inside mb-4">
         {clues.map((c, idx) => <li key={idx}>{c}</li>)}
       </ul>

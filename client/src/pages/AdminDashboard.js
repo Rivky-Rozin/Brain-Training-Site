@@ -17,13 +17,6 @@ const AdminDashboard = () => {
     const [resultFilter, setResultFilter] = useState('');
     const [resultSort, setResultSort] = useState({ key: 'id', direction: 'asc' });
 
-    const PAGE_SIZE = 10;
-    const ROWS_VISIBLE = 7;
-    const [userPage, setUserPage] = useState(1);
-    const [gamePage, setGamePage] = useState(1);
-    const [resultPage, setResultPage] = useState(1);
-    const [feedbackPage, setFeedbackPage] = useState(1);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -113,11 +106,6 @@ const AdminDashboard = () => {
         }),
         resultSort
     );
-    // Pagination slices (הסר פאגינציה)
-    // const pagedUsers = filteredUsers.slice((userPage-1)*PAGE_SIZE, userPage*PAGE_SIZE);
-    // const pagedGames = filteredGames.slice((gamePage-1)*PAGE_SIZE, gamePage*PAGE_SIZE);
-    // const pagedResults = filteredResults.slice((resultPage-1)*PAGE_SIZE, resultPage*PAGE_SIZE);
-    // const pagedFeedbacks = feedbacks.slice((feedbackPage-1)*PAGE_SIZE, feedbackPage*PAGE_SIZE);
 
     // Table header sort click handler
     const handleSort = (sortSetter, sort, key) => {
@@ -134,10 +122,10 @@ const AdminDashboard = () => {
     return (
         <div className="min-h-screen p-8">
             <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg p-8 border border-blue-100">
-                <h1 className="text-3xl font-bold mb-8 text-black text-center drop-shadow">Admin Dashboard</h1>
+                <h1 className="text-3xl font-bold mb-8 text-blue-800 text-center drop-shadow">Admin Dashboard</h1>
 
                 <h2 className="text-xl font-semibold mb-4 flex items-center text-blue-700 border-b pb-2">Users List
-                    <button className="ml-4" style={{background:'#F46447',color:'#fff',padding:'0.18rem 0.55rem',borderRadius:'0.32rem',fontWeight:700,transition:'background 0.2s',border:'none',fontSize:'0.93rem',boxShadow:'0 2px 8px #F4644722',letterSpacing:'0.1px',minWidth:'unset',width:'auto',display:'inline-block'}} onClick={() => exportToExcel(users, 'users.xlsx')}>
+                    <button className="ml-4 bg-green-500 hover:bg-green-700 text-white px-3 py-1 rounded transition-all duration-200" onClick={() => exportToExcel(users, 'users.xlsx')}>
                         Export to Excel
                     </button>
                 </h2>
@@ -150,7 +138,7 @@ const AdminDashboard = () => {
                         onChange={e => setUserFilter(e.target.value)}
                     />
                 </div>
-                <div className="overflow-x-auto mb-10" style={{maxHeight:`${ROWS_VISIBLE*42}px`,overflowY:'auto'}}>
+                <div className="overflow-x-auto mb-10">
                 <table className="min-w-full bg-white border rounded-xl shadow">
                     <thead className="bg-blue-100">
                         <tr>
@@ -168,7 +156,7 @@ const AdminDashboard = () => {
                                 <td className="border px-4 py-2">{user.role === 1 ? 'Admin' : 'User'}</td>
                                 <td className="border px-4 py-2">
                                     {user.role !== 1 && (
-                                        <button className="" style={{background:'#58A9A5',color:'#fff',padding:'0.35rem 0.9rem',borderRadius:'0.4rem',fontWeight:600,transition:'background 0.2s',border:'none'}} onClick={() => makeAdmin(user.id)}>
+                                        <button className="bg-blue-500 hover:bg-blue-700 text-white px-2 py-1 rounded transition-all duration-200" onClick={() => makeAdmin(user.id)}>
                                             Make Admin
                                         </button>
                                     )}
@@ -180,7 +168,7 @@ const AdminDashboard = () => {
                 </div>
 
                 <h2 className="text-xl font-semibold mb-4 flex items-center text-blue-700 border-b pb-2">Games List
-                    <button className="ml-4" style={{background:'#F46447',color:'#fff',padding:'0.18rem 0.55rem',borderRadius:'0.32rem',fontWeight:700,transition:'background 0.2s',border:'none',fontSize:'0.93rem',boxShadow:'0 2px 8px #F4644722',letterSpacing:'0.1px',minWidth:'unset',width:'auto',display:'inline-block'}} onClick={() => exportToExcel(games, 'games.xlsx')}>
+                    <button className="ml-4 bg-green-500 hover:bg-green-700 text-white px-3 py-1 rounded transition-all duration-200" onClick={() => exportToExcel(games, 'games.xlsx')}>
                         Export to Excel
                     </button>
                 </h2>
@@ -193,7 +181,7 @@ const AdminDashboard = () => {
                         onChange={e => setGameFilter(e.target.value)}
                     />
                 </div>
-                <div className="overflow-x-auto mb-10" style={{maxHeight:`${ROWS_VISIBLE*42}px`,overflowY:'auto'}}>
+                <div className="overflow-x-auto mb-10">
                 <table className="min-w-full bg-white border rounded-xl shadow">
                     <thead className="bg-blue-100">
                         <tr>
@@ -226,7 +214,7 @@ const AdminDashboard = () => {
                 </div>
 
                 <h2 className="text-xl font-semibold mb-4 flex items-center text-blue-700 border-b pb-2">User Game Results
-                    <button className="ml-4" style={{background:'#F46447',color:'#fff',padding:'0.18rem 0.55rem',borderRadius:'0.32rem',fontWeight:700,transition:'background 0.2s',border:'none',fontSize:'0.93rem',boxShadow:'0 2px 8px #F4644722',letterSpacing:'0.1px',minWidth:'unset',width:'auto',display:'inline-block'}} onClick={() => exportToExcel(results, 'results.xlsx')}>
+                    <button className="ml-4 bg-green-500 hover:bg-green-700 text-white px-3 py-1 rounded transition-all duration-200" onClick={() => exportToExcel(results, 'results.xlsx')}>
                         Export to Excel
                     </button>
                 </h2>
@@ -239,7 +227,7 @@ const AdminDashboard = () => {
                         onChange={e => setResultFilter(e.target.value)}
                     />
                 </div>
-                <div className="overflow-x-auto" style={{maxHeight:`${ROWS_VISIBLE*42}px`,overflowY:'auto'}}>
+                <div className="overflow-x-auto">
                 <table className="min-w-full bg-white border rounded-xl shadow">
                     <thead className="bg-blue-100">
                         <tr>
@@ -265,7 +253,7 @@ const AdminDashboard = () => {
                 </div>
 
                 <h2 className="text-xl font-semibold mb-4 flex items-center text-blue-700 border-b pb-2">משובים מהמשתמשים</h2>
-                <div className="overflow-x-auto mb-10" style={{maxHeight:`${ROWS_VISIBLE*42}px`,overflowY:'auto'}}>
+                <div className="overflow-x-auto mb-10">
                 <table className="min-w-full bg-white border rounded-xl shadow">
                     <thead className="bg-blue-100">
                         <tr>
