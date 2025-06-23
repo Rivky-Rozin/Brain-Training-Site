@@ -18,17 +18,8 @@ const cardColors = [
 ];
 
 const gameImages = [
-  require('../assets/styles/7.png'),
-  require('../assets/styles/8.png'),
-  require('../assets/styles/9.png'),
-  require('../assets/styles/10.png'),
-  require('../assets/styles/11.png'),
-  require('../assets/styles/12.png'),
-  require('../assets/styles/1.png'),
-  require('../assets/styles/2.png'),
-  require('../assets/styles/3.png'),
-  require('../assets/styles/4.png'),
-  require('../assets/styles/5.png'),
+  require('../assets/styles/game.png'),
+
 ];
 
 export default function GameList() {
@@ -68,34 +59,10 @@ export default function GameList() {
       <div className="container mx-auto px-4">
         <Link
           to="/games"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            background: '#e6f2f0',
-            color: '#2186ae',
-            border: '1.5px solid #b2dbe6',
-            borderRadius: '2rem',
-            padding: '0.45rem 1.2rem 0.45rem 1.1rem',
-            fontWeight: 600,
-            fontSize: '1.08rem',
-            boxShadow: '0 2px 8px #7CC3B622',
-            textDecoration: 'none',
-            marginBottom: '1.2rem',
-            transition: 'background 0.18s, color 0.18s, border 0.18s',
-          }}
-          onMouseOver={e => {
-            e.currentTarget.style.background = '#c9e5e5';
-            e.currentTarget.style.color = '#176b87';
-            e.currentTarget.style.border = '1.5px solid #7CC3B6';
-          }}
-          onMouseOut={e => {
-            e.currentTarget.style.background = '#e6f2f0';
-            e.currentTarget.style.color = '#2186ae';
-            e.currentTarget.style.border = '1.5px solid #b2dbe6';
-          }}
+          className="inline-flex items-center gap-2 bg-white text-teal-700 border border-teal-300 rounded-full px-5 py-2 mb-4 shadow hover:bg-teal-50 hover:text-teal-900 transition-colors font-semibold text-base"
+          style={{ textDecoration: 'none' }}
         >
-          <span style={{fontSize:'1.25em',marginRight:'-0.2em'}}>←</span>
+          <span style={{ fontSize: '1.2em', lineHeight: 1 }}>⟵</span>
           Back to categories
         </Link>
         <h1 className="game-list-title">
@@ -117,11 +84,13 @@ export default function GameList() {
                 alt="game icon"
                 className="game-card-img"
               />
-              <h3 className="game-card-title">{game.name}</h3>
+              <h3 className="game-card-title">{typeof game.name === 'string' ? game.name : 'Alternate Uses'}</h3>
               <div className="game-card-desc">
-                {game.description && game.description.trim() !== ''
-                  ? game.description
-                  : `No description available for this game. Try it out and discover how it can boost your brain skills!`}
+                {typeof game.description === 'string'
+                  ? (game.description && game.description.trim() !== ''
+                    ? game.description
+                    : `No description available for this game. Try it out and discover how it can boost your brain skills!`)
+                  : 'Think of as many creative uses as possible for a common object. You have 60 seconds!'}
               </div>
               <div className="game-card-difficulty">
                 Difficulty: {['Easy','Medium','Hard'][game.difficulty - 1]}

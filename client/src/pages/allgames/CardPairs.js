@@ -11,6 +11,8 @@ export default function CardPairs() {
   const [flipped, setFlipped] = useState([]);  // indices of currently flipped cards
   const [matched, setMatched] = useState([]);  // indices of matched cards
   const [moves, setMoves] = useState(0);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const instructions = `Goal: Find matching pairs.\nHow to play:\n- Click cards to reveal them.\n- Find matching pairs from memory.\n- Game ends when all pairs are found.`;
 
   // initialize deck on mount
   useEffect(() => {
@@ -58,16 +60,29 @@ export default function CardPairs() {
   return (
     <div className="min-h-screen bg-gray-100 py-8">
       <div className="container mx-auto px-4 text-center">
-        <h1 className="text-3xl font-bold mb-6">Card Pairs</h1>
-        <p className="mb-4">Moves: {moves}</p>
-        <div className="grid grid-cols-4 gap-4 justify-center">
+        <h1 className="text-3xl font-extrabold mb-4 text-center text-teal-700 drop-shadow">Card Pairs</h1>
+        <button
+          onClick={() => setShowInstructions(s => !s)}
+          style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px', boxShadow: '0 2px 8px #b2d8d8' }}
+        >
+          {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
+        </button>
+        {showInstructions && (
+          <div style={{ background: '#e6f7f7', color: '#222', borderRadius: '12px', padding: '12px', marginBottom: '18px', fontSize: '1.05rem', boxShadow: '0 1px 4px #b2d8d8', whiteSpace: 'pre-line' }}>
+            {instructions}
+          </div>
+        )}
+        <p className="mb-4 text-lg font-semibold text-teal-800">Moves: <span className="text-teal-600">{moves}</span></p>
+        <div className="grid grid-cols-4 gap-6 justify-center max-w-lg mx-auto mb-8">
           {cards.map((card, idx) => {
             const isFlipped = flipped.includes(idx) || matched.includes(idx);
             return (
               <div
                 key={card.id}
                 onClick={() => handleClick(idx)}
-                className={`w-20 h-20 flex items-center justify-center text-4xl rounded-lg shadow cursor-pointer ${isFlipped ? 'bg-white' : 'bg-blue-400'}`}
+                className={`w-24 h-24 flex items-center justify-center text-4xl rounded-2xl shadow-lg cursor-pointer border-2 transition-all duration-200 font-bold select-none
+                  ${isFlipped ? 'bg-white border-teal-300 scale-105' : 'bg-blue-400 border-blue-400 hover:bg-blue-500 hover:scale-105'}`}
+                style={{boxShadow: isFlipped ? '0 2px 12px #b2d8d8' : '0 1px 4px #b2d8d8'}}
               >
                 {isFlipped ? card.symbol : ''}
               </div>
@@ -75,7 +90,7 @@ export default function CardPairs() {
           })}
         </div>
         {matched.length === cards.length && (
-          <p className="text-green-600 font-semibold mt-6">
+          <p className="text-green-600 font-bold text-xl mt-6">
             🎉 You matched all pairs in {moves} moves!
           </p>
         )}

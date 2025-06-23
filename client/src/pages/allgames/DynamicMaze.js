@@ -8,6 +8,8 @@ export default function DynamicMaze() {
   const size=5;
   const [maze,setMaze]=useState([]);
   const [player,setPlayer]=useState({x:1,y:1});
+  const [showInstructions, setShowInstructions] = useState(false);
+  const instructions = `Goal: Escape a dynamic maze.\nHow to play:\n- Navigate the character/dot in a maze.\n- Walls/passages change in real time – requires focus and adaptation.`;
 
   useEffect(() => {
     startRef.current=Date.now();
@@ -46,6 +48,17 @@ export default function DynamicMaze() {
   return (
     <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center">
       <h1 className="text-3xl font-bold mb-4">Dynamic Maze</h1>
+      <button
+        onClick={() => setShowInstructions(s => !s)}
+        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px' }}
+      >
+        {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
+      </button>
+      {showInstructions && (
+        <div style={{ background: '#e6f7f7', color: '#222', borderRadius: '12px', padding: '12px', marginBottom: '18px', fontSize: '1.05rem', boxShadow: '0 1px 4px #b2d8d8', whiteSpace: 'pre-line' }}>
+          {instructions}
+        </div>
+      )}
       <div className="grid grid-cols-5 gap-0">{maze.flatMap((row,y)=>row.map((cell,x)=>{
         const isPlayer=x===player.x&&y===player.y;
         const bg=cell==='#'?'bg-black':isPlayer?'bg-blue-500':'bg-white';

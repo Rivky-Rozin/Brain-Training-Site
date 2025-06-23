@@ -18,7 +18,10 @@ export default function StroopTest() {
   const [fontColor, setFontColor] = useState('');
   const [score, setScore] = useState(0);
   const [times, setTimes] = useState([]);
+  const [showInstructions, setShowInstructions] = useState(false);
   const startRef = useRef(null);
+
+  const instructions = `Goal: Test reactivity and focus against cognitive conflict.\nHow to play:\n- A color name (e.g., "Blue") is shown in a non-matching color (e.g., red).\n- Click according to the color, not the text.`;
 
   // initialize first round
   useEffect(() => {
@@ -69,20 +72,22 @@ export default function StroopTest() {
     const avg = Math.round(times.reduce((a, b) => a + b, 0) / times.length);
     return (
       <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-8">
-        <h1 className="text-3xl font-bold mb-4">Stroop Test Results</h1>
-        <p className="mb-2">Score: {score}/{roundsCount}</p>
-        <p className="mb-4">Average Reaction Time: {avg} ms</p>
-        <button
-          onClick={() => {
-            setRound(1);
-            setScore(0);
-            setTimes([]);
-            startRound();
-          }}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Restart
-        </button>
+        <h1 className="text-3xl font-extrabold mb-4 text-center text-teal-700 drop-shadow">Stroop Test Results</h1>
+        <div className="bg-white rounded-2xl shadow-lg border border-teal-100 px-8 py-8 mb-6 max-w-md w-full text-center">
+          <p className="mb-2 text-lg font-semibold text-teal-800">Score: <span className="text-teal-600">{score}/{roundsCount}</span></p>
+          <p className="mb-4 text-lg font-semibold text-teal-800">Average Reaction Time: <span className="text-blue-600">{avg} ms</span></p>
+          <button
+            onClick={() => {
+              setRound(1);
+              setScore(0);
+              setTimes([]);
+              startRound();
+            }}
+            className="bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-xl font-semibold shadow mt-2"
+          >
+            Restart
+          </button>
+        </div>
       </div>
     );
   }
@@ -90,21 +95,34 @@ export default function StroopTest() {
   // render active round
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-8">
-      <h1 className="text-3xl font-bold mb-4">Stroop Test</h1>
-      <div className={`text-6xl font-bold mb-6 ${colorClasses[fontColor]}`}>{word}</div>
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <h1 className="text-3xl font-extrabold mb-4 text-center text-teal-700 drop-shadow">Stroop Test</h1>
+      <button
+        onClick={() => setShowInstructions(s => !s)}
+        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px', boxShadow: '0 2px 8px #b2d8d8' }}
+      >
+        {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
+      </button>
+      {showInstructions && (
+        <div style={{ background: '#e6f7f7', color: '#222', borderRadius: '12px', padding: '12px', marginBottom: '18px', fontSize: '1.05rem', boxShadow: '0 1px 4px #b2d8d8', whiteSpace: 'pre-line' }}>
+          {instructions}
+        </div>
+      )}
+      <div className={`text-6xl font-extrabold mb-8 px-12 py-8 bg-white rounded-2xl shadow-lg border border-teal-100 text-center ${colorClasses[fontColor]}`}>{word}</div>
+      <div className="grid grid-cols-2 gap-6 mb-8">
         {colorsList.map(col => (
           <button
             key={col}
             onClick={() => handleChoice(col)}
-            className="px-6 py-3 bg-white shadow rounded hover:bg-gray-200"
+            className="px-8 py-4 bg-white rounded-full shadow-lg border-2 border-teal-200 text-xl font-bold hover:bg-teal-50 hover:border-teal-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-teal-400"
           >
             {col}
           </button>
         ))}
       </div>
-      <p className="text-gray-700">Round {round} of {roundsCount}</p>
-      <p className="text-gray-700">Score: {score}</p>
+      <div className="flex flex-row gap-8 mb-2">
+        <span className="text-gray-700 font-semibold">Round <span className="text-teal-700">{round}</span> of {roundsCount}</span>
+        <span className="text-gray-700 font-semibold">Score: <span className="text-teal-700">{score}</span></span>
+      </div>
     </div>
   );
 }
