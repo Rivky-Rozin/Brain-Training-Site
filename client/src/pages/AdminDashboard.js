@@ -117,16 +117,12 @@ const AdminDashboard = () => {
     };
 
     if (loading) return <div className="p-8">Loading data...</div>;
-    if (error) return <div className="p-8 text-red-600">{error}</div>;
-
-    return (
+    if (error) return <div className="p-8 text-red-600">{error}</div>;    return (
         <div className="min-h-screen p-8">
             <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg p-8 border border-blue-100">
-                <h1 className="text-3xl font-bold mb-8 text-blue-800 text-center drop-shadow">Admin Dashboard</h1>
-
-                <h2 className="text-xl font-semibold mb-4 flex items-center text-blue-700 border-b pb-2">Users List
-                    <button className="ml-4 bg-green-500 hover:bg-green-700 text-white px-3 py-1 rounded transition-all duration-200" onClick={() => exportToExcel(users, 'users.xlsx')}>
-                        Export to Excel
+                <h1 className="text-3xl font-bold mb-8 text-black text-center drop-shadow">Admin Dashboard</h1>                <h2 className="text-xl font-semibold mb-4 flex items-center text-black border-b pb-2">Users List
+                    <button className="ml-2 text-white rounded text-sm transition-all duration-200" style={{backgroundColor: '#F36349', padding: '4px 8px', width: 'fit-content', minWidth: 'auto'}} onMouseEnter={(e) => e.target.style.backgroundColor = '#d04a36'} onMouseLeave={(e) => e.target.style.backgroundColor = '#F36349'} onClick={() => exportToExcel(users, 'users.xlsx')}>
+                        Export
                     </button>
                 </h2>
                 <div className="flex mb-2">
@@ -137,10 +133,9 @@ const AdminDashboard = () => {
                         value={userFilter}
                         onChange={e => setUserFilter(e.target.value)}
                     />
-                </div>
-                <div className="overflow-x-auto mb-10">
+                </div>                <div className="overflow-x-auto mb-10 max-h-80 overflow-y-auto">
                 <table className="min-w-full bg-white border rounded-xl shadow">
-                    <thead className="bg-blue-100">
+                    <thead className="bg-blue-100 sticky top-0">
                         <tr>
                             <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setUserSort, userSort, 'id')}>ID {userSort.key === 'id' ? (userSort.direction === 'asc' ? '▲' : '▼') : ''}</th>
                             <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setUserSort, userSort, 'username')}>Username {userSort.key === 'username' ? (userSort.direction === 'asc' ? '▲' : '▼') : ''}</th>
@@ -156,7 +151,7 @@ const AdminDashboard = () => {
                                 <td className="border px-4 py-2">{user.role === 1 ? 'Admin' : 'User'}</td>
                                 <td className="border px-4 py-2">
                                     {user.role !== 1 && (
-                                        <button className="bg-blue-500 hover:bg-blue-700 text-white px-2 py-1 rounded transition-all duration-200" onClick={() => makeAdmin(user.id)}>
+                                        <button className="bg-teal-500 hover:bg-teal-700 text-white px-2 py-1 rounded transition-all duration-200" onClick={() => makeAdmin(user.id)}>
                                             Make Admin
                                         </button>
                                     )}
@@ -165,11 +160,9 @@ const AdminDashboard = () => {
                         ))}
                     </tbody>
                 </table>
-                </div>
-
-                <h2 className="text-xl font-semibold mb-4 flex items-center text-blue-700 border-b pb-2">Games List
-                    <button className="ml-4 bg-green-500 hover:bg-green-700 text-white px-3 py-1 rounded transition-all duration-200" onClick={() => exportToExcel(games, 'games.xlsx')}>
-                        Export to Excel
+                </div>                <h2 className="text-xl font-semibold mb-4 flex items-center text-black border-b pb-2">Games List
+                    <button className="ml-2 text-white rounded text-sm transition-all duration-200" style={{backgroundColor: '#F36349', padding: '4px 8px', width: 'fit-content', minWidth: 'auto'}} onMouseEnter={(e) => e.target.style.backgroundColor = '#d04a36'} onMouseLeave={(e) => e.target.style.backgroundColor = '#F36349'} onClick={() => exportToExcel(games, 'games.xlsx')}>
+                        Export
                     </button>
                 </h2>
                 <div className="flex mb-2">
@@ -180,10 +173,9 @@ const AdminDashboard = () => {
                         value={gameFilter}
                         onChange={e => setGameFilter(e.target.value)}
                     />
-                </div>
-                <div className="overflow-x-auto mb-10">
+                </div>                <div className="overflow-x-auto mb-10 max-h-80 overflow-y-auto">
                 <table className="min-w-full bg-white border rounded-xl shadow">
-                    <thead className="bg-blue-100">
+                    <thead className="bg-blue-100 sticky top-0">
                         <tr>
                             <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setGameSort, gameSort, 'id')}>ID {gameSort.key === 'id' ? (gameSort.direction === 'asc' ? '▲' : '▼') : ''}</th>
                             <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setGameSort, gameSort, 'name')}>Game Name {gameSort.key === 'name' ? (gameSort.direction === 'asc' ? '▲' : '▼') : ''}</th>
@@ -211,11 +203,9 @@ const AdminDashboard = () => {
                         })}
                     </tbody>
                 </table>
-                </div>
-
-                <h2 className="text-xl font-semibold mb-4 flex items-center text-blue-700 border-b pb-2">User Game Results
-                    <button className="ml-4 bg-green-500 hover:bg-green-700 text-white px-3 py-1 rounded transition-all duration-200" onClick={() => exportToExcel(results, 'results.xlsx')}>
-                        Export to Excel
+                </div>                <h2 className="text-xl font-semibold mb-4 flex items-center text-black border-b pb-2">User Game Results
+                    <button className="ml-2 text-white rounded text-sm transition-all duration-200" style={{backgroundColor: '#F36349', padding: '4px 8px', width: 'fit-content', minWidth: 'auto'}} onMouseEnter={(e) => e.target.style.backgroundColor = '#d04a36'} onMouseLeave={(e) => e.target.style.backgroundColor = '#F36349'} onClick={() => exportToExcel(results, 'results.xlsx')}>
+                        Export
                     </button>
                 </h2>
                 <div className="flex mb-2">
@@ -226,10 +216,9 @@ const AdminDashboard = () => {
                         value={resultFilter}
                         onChange={e => setResultFilter(e.target.value)}
                     />
-                </div>
-                <div className="overflow-x-auto">
+                </div>                <div className="overflow-x-auto max-h-80 overflow-y-auto">
                 <table className="min-w-full bg-white border rounded-xl shadow">
-                    <thead className="bg-blue-100">
+                    <thead className="bg-blue-100 sticky top-0">
                         <tr>
                             <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setResultSort, resultSort, 'User')}>User</th>
                             <th className="border px-4 py-2 cursor-pointer" onClick={() => handleSort(setResultSort, resultSort, 'Game')}>Game</th>
@@ -252,10 +241,10 @@ const AdminDashboard = () => {
                 </table>
                 </div>
 
-                <h2 className="text-xl font-semibold mb-4 flex items-center text-blue-700 border-b pb-2">משובים מהמשתמשים</h2>
-                <div className="overflow-x-auto mb-10">
+                <h2 className="text-xl font-semibold mb-4 flex items-center text-black border-b pb-2">משובים מהמשתמשים</h2>
+                <div className="overflow-x-auto mb-10 max-h-80 overflow-y-auto">
                 <table className="min-w-full bg-white border rounded-xl shadow">
-                    <thead className="bg-blue-100">
+                    <thead className="bg-blue-100 sticky top-0">
                         <tr>
                             <th className="border px-4 py-2">ID</th>
                             <th className="border px-4 py-2">User</th>
