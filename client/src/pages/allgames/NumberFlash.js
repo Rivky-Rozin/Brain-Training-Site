@@ -54,10 +54,10 @@ export default function NumberFlash() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center">
-      <h1 className="text-3xl font-bold mb-4">Number Flash</h1>
+      <h1 className="text-3xl font-extrabold mb-4 text-center text-teal-700 drop-shadow">Number Flash</h1>
       <button
         onClick={() => setShowInstructions(s => !s)}
-        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px' }}
+        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px', boxShadow: '0 2px 8px #b2d8d8' }}
       >
         {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
       </button>
@@ -70,14 +70,14 @@ export default function NumberFlash() {
       {phase === 'init' && (
         <button
           onClick={start}
-          className="bg-blue-500 text-white px-6 py-3 rounded text-lg mt-8"
+          className="bg-teal-500 hover:bg-teal-600 text-white px-8 py-3 rounded-xl text-lg mt-8 font-semibold shadow"
         >
           Start
         </button>
       )}
 
       {phase === 'show' && (
-        <div className="text-6xl mb-4">
+        <div className="text-7xl mb-8 bg-white rounded-2xl shadow-lg border border-teal-100 px-16 py-8 font-mono tracking-widest">
           {idx < seq.length ? seq[idx] : ''}
         </div>
       )}
@@ -87,12 +87,12 @@ export default function NumberFlash() {
           <input
             value={inp}
             onChange={e => setInp(e.target.value.replace(/\D/g, '').slice(0, len))}
-            className="border px-3 py-2 text-center mb-4"
+            className="border-2 border-teal-300 rounded-lg px-6 py-3 text-center mb-6 text-3xl font-mono focus:outline-none focus:ring-2 focus:ring-teal-400"
             autoFocus
           />
           <button
             type="submit"
-            className="bg-green-500 text-white px-4 py-2 rounded"
+            className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-xl font-semibold shadow"
           >
             Check
           </button>
@@ -101,12 +101,12 @@ export default function NumberFlash() {
 
       {phase === 'result' && (
         <div className="text-center">
-          <p className="mb-4 font-semibold">
+          <p className={`mb-6 text-2xl font-bold ${res ? 'text-green-600' : 'text-red-600'}` }>
             {res ? '✅ Correct!' : `❌ Wrong, was ${seq.join('')}`}
           </p>
           <button
             onClick={() => setPhase('init')}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="bg-blue-400 hover:bg-blue-500 text-white px-6 py-2 rounded-xl font-semibold shadow"
           >
             Retry
           </button>

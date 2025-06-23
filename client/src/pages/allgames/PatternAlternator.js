@@ -52,10 +52,10 @@ export default function PatternAlternator() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center">
-      <h1 className="text-3xl font-bold mb-4">Pattern Alternator</h1>
+      <h1 className="text-3xl font-extrabold mb-4 text-center text-teal-700 drop-shadow">Pattern Alternator</h1>
       <button
         onClick={() => setShowInstructions(s => !s)}
-        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px' }}
+        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px', boxShadow: '0 2px 8px #b2d8d8' }}
       >
         {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
       </button>
@@ -64,17 +64,19 @@ export default function PatternAlternator() {
           {instructions}
         </div>
       )}
-      <div className="flex space-x-4 mb-4 text-5xl">
-        {shown.map((symbol,i)=>(<span key={i}>{symbol}</span>))}
-        <span className="text-gray-400">?</span>
+      <div className="flex space-x-4 mb-8 text-5xl bg-white rounded-2xl shadow-lg border border-teal-100 px-8 py-6 items-center">
+        {shown.map((symbol,i)=>(<span key={i} className="mx-2">{symbol}</span>))}
+        <span className="text-gray-400 mx-2">?</span>
       </div>
-      <div className="flex space-x-4 mb-4">
+      <div className="flex space-x-6 mb-6">
         {options.map((sym,i)=>(
-          <button key={i} onClick={()=>handleOptionClick(sym)} className="text-5xl p-4 bg-white rounded shadow border hover:bg-blue-100">{sym}</button>
+          <button key={i} onClick={()=>handleOptionClick(sym)}
+            className="text-5xl p-6 bg-white rounded-full shadow-lg border-2 border-teal-200 hover:bg-teal-50 hover:border-teal-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-teal-400"
+            style={{minWidth:'80px',minHeight:'80px'}}>{sym}</button>
         ))}
       </div>
-      {message&&<p className="text-xl font-semibold mb-4">{message}</p>}
-      <button onClick={nextRound} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Next Round</button>
+      {message&&<p className={`text-xl font-bold mb-6 ${message.includes('Correct') ? 'text-green-600' : 'text-red-600'}`}>{message}</p>}
+      <button onClick={nextRound} className="bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-xl font-semibold shadow">Next Round</button>
     </div>
   );
 }

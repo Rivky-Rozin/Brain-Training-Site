@@ -60,10 +60,10 @@ export default function ReactionTap() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-8">
-      <h1 className="text-3xl font-bold mb-4">Reaction Tap</h1>
+      <h1 className="text-3xl font-extrabold mb-4 text-center text-teal-700 drop-shadow">Reaction Tap</h1>
       <button
         onClick={() => setShowInstructions(s => !s)}
-        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px' }}
+        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px', boxShadow: '0 2px 8px #b2d8d8' }}
       >
         {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
       </button>
@@ -74,13 +74,13 @@ export default function ReactionTap() {
       )}
       <div
         onClick={handleTap}
-        className={`w-64 h-64 rounded-full flex items-center justify-center cursor-pointer transition-colors duration-300
-          ${status === 'ready' ? 'bg-green-500' : 'bg-red-500'}`}
+        className={`w-72 h-72 rounded-full flex items-center justify-center cursor-pointer transition-colors duration-300 shadow-lg border-4
+          ${status === 'ready' ? 'bg-green-400 border-green-600' : 'bg-red-400 border-red-600'} hover:ring-4 hover:ring-teal-400`}
       >
-        <span className="text-4xl text-white">{message}</span>
+        <span className="text-3xl text-white font-bold text-center px-4">{message}</span>
       </div>
       {reactionTime !== null && (
-        <p className="mt-4 text-lg">Last reaction: {reactionTime} ms</p>
+        <p className="mt-6 text-xl font-bold text-teal-700">Last reaction: {reactionTime} ms</p>
       )}
     </div>
   );

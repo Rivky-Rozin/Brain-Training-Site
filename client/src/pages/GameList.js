@@ -58,9 +58,11 @@ export default function GameList() {
       <div className="container mx-auto px-4">
         <Link
           to="/games"
-          className="text-blue-600 underline mb-4 inline-block"
+          className="inline-flex items-center gap-2 bg-white text-teal-700 border border-teal-300 rounded-full px-5 py-2 mb-4 shadow hover:bg-teal-50 hover:text-teal-900 transition-colors font-semibold text-base"
+          style={{ textDecoration: 'none' }}
         >
-          ← Back to categories
+          <span style={{ fontSize: '1.2em', lineHeight: 1 }}>⟵</span>
+          Back to categories
         </Link>
         <h1 className="game-list-title">
           {category
@@ -81,11 +83,13 @@ export default function GameList() {
                 alt="game icon"
                 className="game-card-img"
               />
-              <h3 className="game-card-title">{game.name}</h3>
+              <h3 className="game-card-title">{typeof game.name === 'string' ? game.name : 'Alternate Uses'}</h3>
               <div className="game-card-desc">
-                {game.description && game.description.trim() !== ''
-                  ? game.description
-                  : `No description available for this game. Try it out and discover how it can boost your brain skills!`}
+                {typeof game.description === 'string'
+                  ? (game.description && game.description.trim() !== ''
+                    ? game.description
+                    : `No description available for this game. Try it out and discover how it can boost your brain skills!`)
+                  : 'Think of as many creative uses as possible for a common object. You have 60 seconds!'}
               </div>
               <div className="game-card-difficulty">
                 Difficulty: {['Easy','Medium','Hard'][game.difficulty - 1]}

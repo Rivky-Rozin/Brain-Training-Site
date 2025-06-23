@@ -46,10 +46,10 @@ export default function SimpleLogicGrid() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-3xl font-bold mb-4">Simple Logic Grid</h1>
+      <h1 className="text-3xl font-extrabold mb-4 text-center text-teal-700 drop-shadow">Simple Logic Grid</h1>
       <button
         onClick={() => setShowInstructions(s => !s)}
-        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px' }}
+        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px', boxShadow: '0 2px 8px #b2d8d8' }}
       >
         {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
       </button>
@@ -58,29 +58,34 @@ export default function SimpleLogicGrid() {
           {instructions}
         </div>
       )}
-      <ul className="list-disc list-inside mb-4">
-        {clues.map((c, idx) => <li key={idx}>{c}</li>)}
+      <ul className="list-disc list-inside mb-6 bg-white rounded-2xl shadow-lg border border-teal-100 px-8 py-6 text-lg font-semibold text-teal-800 max-w-md mx-auto">
+        {clues.map((c, idx) => <li key={idx} className="mb-1">{c}</li>)}
       </ul>
-      <table className="table-auto mx-auto mb-4 border-collapse">
+      <div className="overflow-x-auto mb-6">
+      <table className="table-auto border-separate border-spacing-0 mx-auto rounded-xl shadow-md bg-white">
         <thead>
           <tr>
-            <th></th>
+            <th className="border-b-2 border-teal-300 p-2 bg-teal-50"></th>
             {colors.map(color => (
-              <th key={color} className="border p-2 text-center">{color}</th>
+              <th key={color} className="border-b-2 border-teal-300 p-2 text-center bg-teal-50 text-teal-800 font-bold">{color}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {people.map((person, i) => (
             <tr key={person}>
-              <td className="border p-2 font-semibold">{person}</td>
+              <td className="border-r-2 border-teal-200 p-2 font-semibold bg-teal-50 text-teal-700">{person}</td>
               {colors.map((_, j) => {
                 const state = cells[`${i}-${j}`];
                 const mark = state === true ? '✔' : state === false ? '✖' : '';
+                let bg = 'bg-gray-100';
+                let border = 'border border-gray-200';
+                if (state === true) { bg = 'bg-green-200'; border = 'border-2 border-green-400'; }
+                else if (state === false) { bg = 'bg-red-100'; border = 'border-2 border-red-300'; }
                 return (
                   <td
                     key={j}
-                    className="border p-4 text-center cursor-pointer"
+                    className={`p-4 text-center cursor-pointer transition-colors duration-200 font-bold text-xl ${bg} ${border} rounded-lg hover:ring-2 hover:ring-teal-300`}
                     onClick={() => handleCellClick(i, j)}
                   >{mark}</td>
                 );
@@ -89,17 +94,18 @@ export default function SimpleLogicGrid() {
           ))}
         </tbody>
       </table>
+      </div>
       <button
         onClick={validate}
-        className="bg-green-500 text-white px-4 py-2 rounded"
+        className="bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-xl font-semibold shadow mt-6"
       >
         Check
       </button>
       {result === true && (
-        <p className="mt-4 text-green-700 font-semibold">Correct!</p>
+        <p className="mt-6 text-green-700 font-bold text-xl">Correct!</p>
       )}
       {result === false && (
-        <p className="mt-4 text-red-700 font-semibold">Incorrect!</p>
+        <p className="mt-6 text-red-700 font-bold text-xl">Incorrect!</p>
       )}
     </div>
   );
