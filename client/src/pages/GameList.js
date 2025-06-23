@@ -18,7 +18,17 @@ const cardColors = [
 ];
 
 const gameImages = [
-  require('../assets/styles/game.png'),
+  require('../assets/styles/7.png'),
+  require('../assets/styles/8.png'),
+  require('../assets/styles/9.png'),
+  require('../assets/styles/10.png'),
+  require('../assets/styles/11.png'),
+  require('../assets/styles/12.png'),
+  require('../assets/styles/1.png'),
+  require('../assets/styles/2.png'),
+  require('../assets/styles/3.png'),
+  require('../assets/styles/4.png'),
+  require('../assets/styles/5.png'),
 ];
 
 export default function GameList() {
