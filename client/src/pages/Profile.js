@@ -136,19 +136,17 @@ const Profile = () => {
   const avgReactionTime = reactionTimeData.length > 0 ?
     (reactionTimeData.reduce((a, b) => a + parseFloat(b.reactionTime), 0) / reactionTimeData.length).toFixed(2) : 0;
 
-  // עיבוד ממוצע יומי לאחוזי הצלחה
-  // נניח ש-score הוא ניקוד מוחלט, ונחשב את האחוז מתוך ניקוד מקסימלי אפשרי (למשל 10)
-  const MAX_SCORE = 10; // שנה כאן אם הניקוד המקסימלי שונה
+  // עיבוד ממוצע יומי לאחוזי הצלחה - אחוז הצלחות (score===1) לכל יום
   const dailySuccessRateMap = results.reduce((acc, r) => {
     const date = new Date(r.completedAt).toLocaleDateString();
-    if (!acc[date]) acc[date] = [];
-    // נחשב אחוז הצלחה לכל תוצאה
-    acc[date].push((r.score / MAX_SCORE) * 100);
+    if (!acc[date]) acc[date] = { total: 0, success: 0 };
+    acc[date].total++;
+    if (r.score === 1) acc[date].success++;
     return acc;
   }, {});
-  const successRateData = Object.entries(dailySuccessRateMap).map(([date, scores]) => ({
+  const successRateData = Object.entries(dailySuccessRateMap).map(([date, { total, success }]) => ({
     date,
-    successRate: (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2)
+    successRate: total > 0 ? ((success / total) * 100).toFixed(2) : '0.00'
   }));
   const avgSuccessRate = successRateData.length > 0 ?
     (successRateData.reduce((a, b) => a + parseFloat(b.successRate), 0) / successRateData.length).toFixed(2) : 0;
