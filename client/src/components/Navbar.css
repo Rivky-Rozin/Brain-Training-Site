@@ -1,0 +1,153 @@
+/* Modern brain-training navbar styles */
+
+.nav-brain {
+  background: #e3f2f1;
+  box-shadow: 0 2px 16px 0 #5E9A9240;
+  border-bottom: 3px solid #F3654A33;
+}
+
+.nav-brain .container {
+  padding: 0 1.5rem;
+  padding-left: 0 !important;
+  display: flex;
+  flex-direction: row; /* הלוגו בצד שמאל, התפריט בצד ימין */
+  justify-content: space-between; /* הלוגו בצד שמאל, התפריט בצד ימין */
+  align-items: center;
+  height: 100%;
+}
+
+.nav-brain .logo-brain {
+  order: 2;
+  margin-left: 0 !important;
+  margin-right: 0;
+}
+
+.nav-brain ul {
+  font-weight: 600;
+  font-size: 1.08rem;
+  letter-spacing: 0.5px;
+  display: flex;
+  flex-direction: row;
+  gap: 2.2rem;
+  justify-content: flex-start;
+  align-items: center;
+  width: auto;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.nav-brain ul li {
+  transition: background 0.18s, color 0.18s;
+  text-align: right;
+  display: block;
+  width: auto;
+  margin-bottom: 0;
+}
+
+.nav-brain ul li .cursor-pointer,
+.nav-brain ul li a {
+  color: #263238;
+  padding: 0.3rem 0.7rem;
+  border-radius: 0.7rem;
+  transition: background 0.18s, color 0.18s;
+  display: block;
+  width: 100%;
+  text-align: right;
+}
+
+.nav-brain ul li .cursor-pointer:hover,
+.nav-brain ul li a:hover {
+  background: #F3654A22;
+  color: #F3654A;
+}
+
+.nav-brain .dropdown-menu {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px 0 #5E9A9240;
+  border: 1.5px solid #e3e3e3;
+  margin-top: 0.7rem;
+  overflow-y: auto;
+  min-width: 170px;
+  max-height: 420px;
+  right: 0;
+  left: auto;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0;
+}
+
+.nav-brain .dropdown-menu li {
+  display: block;
+  width: 100%;
+  margin-bottom: 0; /* צמצום רווח בין אפשרויות */
+  border-bottom: none;
+  padding: 0;
+  line-height: 1; /* צמצום ריווח בין האפשרויות */
+  height: auto;
+}
+
+.nav-brain .dropdown-menu li:last-child {
+  border-bottom: none;
+}
+
+.nav-brain .dropdown-menu li a,
+.nav-brain .dropdown-menu li span {
+  color: #263238;
+  font-weight: 500;
+  padding: 0.18rem 0.5rem; /* צמצום הרווח האנכי בין אפשרויות */
+  border-radius: 0;
+  transition: background 0.18s, color 0.18s;
+  display: block;
+  width: 100%;
+  text-align: right;
+  margin: 0;
+  line-height: 1.1; /* הקטנת רווח בין שורות */
+  font-size: 0.95rem;
+  height: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-brain .dropdown-menu li a:hover,
+.nav-brain .dropdown-menu li span:hover {
+  background: #e3f2f1;
+  color: #5E9A92;
+}
+
+.nav-brain .logo-brain-img {
+  width: 5rem;
+  height: 5rem;
+  margin-right: 0;
+  margin-left: 0;
+  object-fit: contain;
+  display: block;
+  border-radius: 0.5rem;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  transition: transform 0.18s;
+  position: static;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .nav-brain .container {
+    padding: 0 0.5rem;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+  }
+  .nav-brain ul {
+    font-size: 0.98rem;
+    gap: 1.1rem;
+  }
+  .nav-brain .logo-brain-img {
+    width: 3.2rem;
+    height: 3.2rem;
+    margin-right: 0;
+    margin-left: 0;
+  }
+}

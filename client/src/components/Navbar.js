@@ -1,7 +1,9 @@
 // client/src/components/Nav.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
+import logoImg from '../assets/styles/logo.png';
+import './Navbar.css';
 
 const categories = [
   { id: 1, name: 'Analytical Thinking' },
@@ -17,6 +19,7 @@ export default function Nav() {
   const { user, setUser } = useUser();
   const navRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Close menus when clicking outside
   useEffect(() => {
@@ -45,90 +48,55 @@ export default function Nav() {
     <>
       <nav
         ref={navRef}
-        className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50"
+        className="nav-brain fixed top-0 left-0 w-full text-white shadow-md z-50"
       >
-        <div className="container mx-auto flex items-center justify-between h-16 px-4">
-          {/* Left menu */}
-          <ul className="flex space-x-8">
+        <div className="container flex flex-row-reverse justify-between items-center mx-auto">
+          <Link to="/" className="logo-brain">
+            <img src={logoImg} alt="logo" className="logo-brain-img" />
+          </Link>
+          <ul className="nav-brain-menu flex flex-row gap-12 items-center">
             <li className="relative">
               <span
                 onClick={() => toggleMenu('personal')}
-                className="cursor-pointer hover:text-blue-200 select-none"
+                className={`cursor-pointer hover:text-blue-200 select-none w-full block text-right ${location.pathname.startsWith('/profile') ? 'font-bold' : ''}`}
               >
                 Personal Area
               </span>
               {openMenu === 'personal' && (
-                <ul className="absolute left-0 mt-4 w-48 bg-white text-gray-800 rounded shadow-lg z-10">
-                  <li className="px-6 py-3 hover:bg-gray-100">
-                    <Link to="/profile">Profile</Link>
-                  </li>
-                  <li className="px-6 py-3 hover:bg-gray-100">
-                    <span onClick={handleLogout} className="cursor-pointer">
-                      Logout
-                    </span>
-                  </li>
+                <ul className="dropdown-menu absolute right-0 mt-4 w-48 bg-white text-gray-800 rounded shadow-lg z-10">
+                  <li className="w-full"><Link to="/profile" className={location.pathname.startsWith('/profile') ? 'font-bold' : ''}>Profile</Link></li>
+                  <li className="w-full"><span onClick={handleLogout} className="cursor-pointer">Logout</span></li>
                 </ul>
               )}
             </li>
             <li className="relative">
               <span
                 onClick={() => toggleMenu('training')}
-                className="cursor-pointer hover:text-blue-200 select-none"
+                className={`cursor-pointer hover:text-blue-200 select-none w-full block text-right ${location.pathname.startsWith('/games') ? 'font-bold' : ''}`}
               >
                 Brain Training
               </span>
               {openMenu === 'training' && (
-                <ul className="absolute left-0 mt-4 w-52 max-h-60 overflow-auto bg-white text-gray-800 rounded shadow-lg z-10">
+                <ul className="dropdown-menu absolute right-0 mt-4 w-52 max-h-60 overflow-auto bg-white text-gray-800 rounded shadow-lg z-10">
                   {categories.map(cat => (
-                    <li key={cat.id} className="px-6 py-3 hover:bg-gray-100">
-                      <Link to={`/games/${cat.id}`}>{cat.name}</Link>
-                    </li>
+                    <li key={cat.id} className="w-full"><Link to={`/games/${cat.id}`} className={location.pathname === `/games/${cat.id}` ? 'font-bold' : ''}>{cat.name}</Link></li>
                   ))}
                 </ul>
               )}
             </li>
             <li className="relative">
-              <span
-                onClick={() => toggleMenu('articles')}
-                className="cursor-pointer hover:text-blue-200 select-none"
-              >
-                Articles
-              </span>
-              {openMenu === 'articles' && (
-                <ul className="absolute left-0 mt-4 w-48 bg-white text-gray-800 rounded shadow-lg z-10">
-                 <li><Link to="/article">Brain Article</Link></li>
-
-                </ul>
-              )}
-            </li>
-            <li className="relative">
-              <Link to="/forum" className="hover:text-blue-200 select-none">
+              <Link to="/forum" className={`hover:text-blue-200 select-none w-full block text-right ${location.pathname.startsWith('/forum') ? 'font-bold' : ''}`}>
                 Game Forum
               </Link>
             </li>
             {user?.role === 1 && (
               <li className="relative">
-                <Link to="/admin" className="hover:text-blue-200 select-none">
+                <Link to="/admin" className={`hover:text-blue-200 select-none w-full block text-right ${location.pathname.startsWith('/admin') ? 'font-bold' : ''}`}>
                   Admin Dashboard
                 </Link>
               </li>
             )}
           </ul>
-
-          {/* Right side */}
-          <div className="flex items-center gap-4">
-            <Link to="/" className="text-3xl hover:text-blue-200">
-              🧠
-            </Link>
-            {user && (
-              <img
-                src={user.profile_image || '/default-profile.png'}
-                alt="profile"
-                className="w-10 h-10 rounded-full border-2 border-white object-cover shadow"
-                style={{ background: '#eee' }}
-              />
-            )}
-          </div>
         </div>
       </nav>
       {/* Spacer so content below isn’t hidden under fixed nav */}

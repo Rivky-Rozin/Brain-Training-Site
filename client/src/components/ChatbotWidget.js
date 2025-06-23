@@ -7,25 +7,25 @@ const BOT_LABEL = "Want to better understand how your brain works? Ask me!";
 
 const RobotSVG = ({ size = 32 }) => (
   <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="16" cy="16" r="16" fill="#6366f1" />
+    <circle cx="16" cy="16" r="16" fill="#58A9A4" />
     <rect x="8" y="12" width="16" height="10" rx="5" fill="#fff" />
-    <circle cx="12" cy="17" r="2" fill="#6366f1" />
-    <circle cx="20" cy="17" r="2" fill="#6366f1" />
-    <rect x="14" y="21" width="4" height="2" rx="1" fill="#6366f1" />
-    <rect x="15" y="7" width="2" height="6" rx="1" fill="#6366f1" />
+    <circle cx="12" cy="17" r="2" fill="#58A9A4" />
+    <circle cx="20" cy="17" r="2" fill="#58A9A4" />
+    <rect x="14" y="21" width="4" height="2" rx="1" fill="#58A9A4" />
+    <rect x="15" y="7" width="2" height="6" rx="1" fill="#58A9A4" />
   </svg>
 );
 
 const CloseSVG = ({ size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="10" cy="10" r="10" fill="#6366f1" />
+    <circle cx="10" cy="10" r="10" fill="#509994" />
     <path d="M6 6l8 8M14 6l-8 8" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
   </svg>
 );
 
 const SendSVG = ({ size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M2 10L18 3L11 19L9 11L2 10Z" fill="#6366f1" stroke="#6366f1" strokeWidth="1.5" strokeLinejoin="round" />
+    <path d="M2 10L18 3L11 19L9 11L2 10Z" fill="#509994" stroke="#509994" strokeWidth="1.5" strokeLinejoin="round" />
   </svg>
 );
 
