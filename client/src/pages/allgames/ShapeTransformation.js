@@ -17,7 +17,7 @@ export default function ShapeTransformation() {
     // ניצחון אם נוספו לפחות 4 צורות
     const score = updated.length >= 4 ? 1 : 0;
     axios.post('/api/results', { gameId: 15, score, timeSpent })
-      .catch(console.error);
+      .catch(err => alert(err.response?.data?.message || err.message || 'שגיאה בשליחת תוצאה'));
   };
 
   useEffect(() => {

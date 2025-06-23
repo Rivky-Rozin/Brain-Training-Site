@@ -42,8 +42,9 @@ export default function GameList() {
             ? data.games
             : [];
         setGames(list);
-      } catch {
+      } catch (err) {
         setError('Error loading games');
+        alert(err.response?.data?.message || err.message || 'Error loading games');
       } finally {
         setLoading(false);
       }

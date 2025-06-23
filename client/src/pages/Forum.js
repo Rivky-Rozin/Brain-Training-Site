@@ -47,7 +47,7 @@ export default function Forum() {
             setHasMore(newMessages.length === PAGE_SIZE);
             setPage(pageToLoad);
         } catch (err) {
-            // handle error
+            alert(err.response?.data?.message || err.message || 'שגיאה בטעינת הודעות');
         }
         setLoading(false);
     };
@@ -91,7 +91,7 @@ export default function Forum() {
                 chatRef.current.scrollTop = chatRef.current.scrollHeight;
             }, 100);
         } catch (err) {
-            // handle error
+            alert(err.response?.data?.message || err.message || 'שגיאה בשליחת הודעה');
         }
         setSending(false);
     };
@@ -128,7 +128,7 @@ export default function Forum() {
             setMessages((prev) => prev.map(m => m.id === msg.id ? res.data : m));
             handleEditCancel();
         } catch (err) {
-            // handle error
+            alert(err.response?.data?.message || err.message || 'שגיאה בעריכת הודעה');
         }
         setEditLoading(false);
     };
@@ -140,7 +140,7 @@ export default function Forum() {
             await axios.delete(`/api/messages/${msg.id}`, token ? { headers: { Authorization: `Bearer ${token}` } } : undefined);
             setMessages((prev) => prev.filter(m => m.id !== msg.id));
         } catch (err) {
-            // handle error
+            alert(err.response?.data?.message || err.message || 'שגיאה במחיקת הודעה');
         }
     };
 

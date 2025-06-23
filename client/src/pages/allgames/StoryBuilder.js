@@ -28,7 +28,7 @@ export default function StoryBuilder() {
     // ניצחון אם כתבו לפחות 30 תווים
     const score = text.length >= 30 ? 1 : 0;
     axios.post('/api/results', { gameId: 14, score, timeSpent })
-      .catch(console.error);
+      .catch(err => alert(err.response?.data?.message || err.message || 'שגיאה בשליחת תוצאה'));
   };
 
   return (

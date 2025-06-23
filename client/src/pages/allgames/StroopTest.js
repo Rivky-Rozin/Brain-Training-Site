@@ -63,7 +63,7 @@ export default function StroopTest() {
         timeSpent: Math.floor(totalTime / 1000)
       }, {
         headers: { Authorization: `Bearer ${token}` }
-      }).catch(console.error);
+      }).catch(err => alert(err.response?.data?.message || err.message || 'שגיאה בשליחת תוצאה'));
     }
   };
 

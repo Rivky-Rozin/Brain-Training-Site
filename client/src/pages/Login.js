@@ -42,6 +42,7 @@ const Login = () => {
             navigate('/');
         } catch (err) {
             setError(err.response?.data?.message || 'Login failed');
+            alert(err.response?.data?.message || 'Login failed');
         } finally {
             setLoading(false);
         }
