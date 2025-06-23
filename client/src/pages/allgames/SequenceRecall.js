@@ -1,9 +1,10 @@
 // src/pages/allgames/SequenceRecall.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { FaInfoCircle } from 'react-icons/fa';
 
 // Sequence Recall: watch a sequence of lights then repeat it
-export default function SequenceRecall() {
+export function SequenceRecall() {
   const startRef = useRef(Date.now());
   const [sequence, setSequence] = useState([]);
   const [playerSeq, setPlayerSeq] = useState([]);
@@ -64,8 +65,9 @@ export default function SequenceRecall() {
       <h1 className="text-3xl font-extrabold mb-4 text-center text-teal-700 drop-shadow">Sequence Recall</h1>
       <button
         onClick={() => setShowInstructions(s => !s)}
-        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px', boxShadow: '0 2px 8px #b2d8d8' }}
+        style={{ background: '#58A9A5', color: 'white', borderRadius: '20px', fontSize: '1rem', padding: '7px 20px', border: 'none', cursor: 'pointer', marginBottom: '12px', boxShadow: '0 2px 8px #b2d8d8', display: 'flex', alignItems: 'center', gap: '8px' }}
       >
+        <FaInfoCircle style={{ marginRight: 6, fontSize: '1.2em' }} />
         {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
       </button>
       {showInstructions && (

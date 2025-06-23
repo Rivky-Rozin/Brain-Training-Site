@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 const words = ['apple','book','car','door','elephant','flower','guitar','house'];
-export default function WordListMemory() {
+export function WordListMemory() {
   const startRef = useRef(Date.now());
   const [list, setList] = useState([]);
   const [phase, setPhase] = useState('show');

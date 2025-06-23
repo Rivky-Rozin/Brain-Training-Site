@@ -84,13 +84,11 @@ export default function GameList() {
                 alt="game icon"
                 className="game-card-img"
               />
-              <h3 className="game-card-title">{typeof game.name === 'string' ? game.name : 'Alternate Uses'}</h3>
+              <h3 className="game-card-title">{game.name}</h3>
               <div className="game-card-desc">
-                {typeof game.description === 'string'
-                  ? (game.description && game.description.trim() !== ''
-                    ? game.description
-                    : `No description available for this game. Try it out and discover how it can boost your brain skills!`)
-                  : 'Think of as many creative uses as possible for a common object. You have 60 seconds!'}
+                {game.description && game.description.trim() !== ''
+                  ? game.description
+                  : `No description available for this game. Try it out and discover how it can boost your brain skills!`}
               </div>
               <div className="game-card-difficulty">
                 Difficulty: {['Easy','Medium','Hard'][game.difficulty - 1]}
