@@ -128,7 +128,7 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Pricing Section */}
+            {/* Pricing Section
             <section className="w-full flex flex-col items-center py-12 px-4">
                 <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-12" style={{ color: palette.textMain, letterSpacing: '-0.2px' }}>Choose Your Plan</h2>
                 <div className="flex flex-col md:flex-row gap-10 justify-center items-center">
@@ -180,7 +180,7 @@ const Home = () => {
                         );
                     })}
                 </div>
-            </section>
+            </section> */}
 
             {/* Testimonials Section */}
             <section className="w-full flex flex-col items-center py-16 px-4" style={{ background: palette.accent4 }}>
