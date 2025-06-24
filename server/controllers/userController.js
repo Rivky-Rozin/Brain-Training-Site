@@ -4,7 +4,7 @@ import { getAllUsers, updateUserRole as updateUserRoleService, updateUserProfile
 export const getUsers = async (req, res) => {
     try {
         const users = await getAllUsers();
-        res.status.json({ users });
+        res.status(200).json({ users });
     } catch (error) {
         console.error('Error getting users:', error);
         res.status(500).json({ error: error.message });
