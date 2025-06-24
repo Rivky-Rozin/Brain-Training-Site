@@ -1,14 +1,13 @@
 // התפקיד של הקונטרולר הוא לפנות לפונקציות בסרוויס שמדברות עם בסיס הנתונים ולהתמודד עם הנתונים שהוא מקבל מהשרת
-import { getTables as getTablesFromService } from '../services/userService.js';
-import User from '../models/User.js';
+import { getAllUsers, updateUserRole as updateUserRoleService, updateUserProfileImage as updateUserProfileImageService } from '../services/userService.js';
 
 export const getUsers = async (req, res) => {
     try {
-        const users = await User.findAll({ attributes: ['id', 'username', 'role'] });
+        const users = await getAllUsers();
         res.json({ users });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Server error' });
+    } catch (error) {
+        console.error('Error getting users:', error);
+        res.status(500).json({ error: error.message });
     }
 };
 
@@ -16,16 +15,14 @@ export const updateUserRole = async (req, res) => {
     try {
         const { userId } = req.params;
         const { role } = req.body;
-        const user = await User.findByPk(userId);
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-        user.role = role;
-        await user.save();
+        const user = await updateUserRoleService(userId, role);
         res.json({ message: 'Role updated', user });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Server error' });
+    } catch (error) {
+        console.error('Error updating user role:', error);
+        if (error.message === 'User not found') {
+            return res.status(404).json({ error: error.message });
+        }
+        res.status(500).json({ error: error.message });
     }
 };
 
@@ -33,15 +30,13 @@ export const updateUserProfileImage = async (req, res) => {
     try {
         const { userId } = req.params;
         const { profile_image } = req.body;
-        const user = await User.findByPk(userId);
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-        user.profile_image = profile_image;
-        await user.save();
+        const user = await updateUserProfileImageService(userId, profile_image);
         res.json({ message: 'Profile image updated', user });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Server error' });
+    } catch (error) {
+        console.error('Error updating profile image:', error);
+        if (error.message === 'User not found') {
+            return res.status(404).json({ error: error.message });
+        }
+        res.status(500).json({ error: error.message });
     }
 };

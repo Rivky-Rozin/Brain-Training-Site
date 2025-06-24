@@ -87,6 +87,45 @@ export const loginUser = async (email, password) => {
     }
 };
 
+// קבלת כל המשתמשים
+export const getAllUsers = async () => {
+    try {
+        return await User.findAll({ attributes: ['id', 'username', 'role'] });
+    } catch (error) {
+        throw error;
+    }
+};
+
+// עדכון תפקיד משתמש
+export const updateUserRole = async (userId, role) => {
+    try {
+        const user = await User.findByPk(userId);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        user.role = role;
+        await user.save();
+        return user;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// עדכון תמונת פרופיל
+export const updateUserProfileImage = async (userId, profileImage) => {
+    try {
+        const user = await User.findByPk(userId);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        user.profile_image = profileImage;
+        await user.save();
+        return user;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const getTables = async () => {
     const [results] = await sequelize.query('SHOW TABLES');
     return results.map(result => Object.values(result)[0]);
