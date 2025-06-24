@@ -1,21 +1,14 @@
 // התפקיד של הקונטרולר הוא לפנות לפונקציות בסרוויס שמדברות עם בסיס הנתונים ולהתמודד עם הנתונים שהוא מקבל מהשרת
-import { Result, User, Game } from '../models/index.js';
-import { getUserResults as getUserResultsService, saveResult as saveResultService } from '../services/resultService.js';
+import { getUserResults as getUserResultsService, saveResult as saveResultService, getAllResults as getAllResultsService } from '../services/resultService.js';
 
 
 export const getAllResults = async (req, res) => {
     try {
-        const results = await Result.findAll({
-            include: [
-                { model: User, attributes: ['username'] },
-                { model: Game, attributes: ['name'] }
-            ],
-            order: [['completedAt', 'DESC']]
-        });
+        const results = await getAllResultsService();
         res.json({ results });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Server error' });
+    } catch (error) {
+        console.error('Error getting all results:', error);
+        res.status(500).json({ error: error.message });
     }
 };
 
