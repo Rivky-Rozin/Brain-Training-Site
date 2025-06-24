@@ -14,13 +14,6 @@ export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         
-        // Validate input
-        if (!email || !password) {
-            return res.status(400).json({ 
-                message: 'Email and password are required' 
-            });
-        }
-
         // Attempt login
         const userData = await loginUser(email, password);
         
@@ -46,32 +39,8 @@ export const login = async (req, res) => {
 };
 
 export const register = async (req, res) => {
-    try {
-        console.log('Request body:', req.body);
-        console.log('Request headers:', req.headers);
-        
-        if (!req.body) {
-            return res.status(400).json({ 
-                message: 'No request body received' 
-            });
-        }
-
+    try {        
         const { username, email, password } = req.body;
-        
-        // Validate input
-        if (!username || !email || !password) {
-            return res.status(400).json({ 
-                message: 'Username, email and password are required' 
-            });
-        }
-
-        // Validate password strength
-        if (password.length < 6) {
-            return res.status(400).json({ 
-                message: 'Password must be at least 6 characters long' 
-            });
-        }
-
         // Attempt registration
         const userData = await registerUser(username, email, password);
         
@@ -91,52 +60,6 @@ export const register = async (req, res) => {
         console.error('Registration error:', error);
         res.status(400).json({ 
             message: error.message || 'Registration failed'
-        });
-    }
-};
-
-export const changePassword = async (req, res) => {
-    try {
-        const { currentPassword, newPassword } = req.body;
-        const userId = req.user.id; // This comes from the auth middleware
-
-        // Validate input
-        if (!currentPassword || !newPassword) {
-            return res.status(400).json({ 
-                message: 'נדרשות סיסמה נוכחית וסיסמה חדשה' 
-            });
-        }
-
-        // Validate new password strength
-        if (newPassword.length < 6) {
-            return res.status(400).json({ 
-                message: 'הסיסמה החדשה חייבת להכיל לפחות 6 תווים' 
-            });
-        }
-
-        // Update password
-        const result = await updatePassword(userId, currentPassword, newPassword);
-        
-        res.json(result);
-
-    } catch (error) {
-        console.error('Password update error:', error);
-        res.status(400).json({ 
-            message: error.message || 'שגיאה בעדכון הסיסמה'
-        });
-    }
-};
-
-// Get user results
-export const getUserResultsController = async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        const results = await getUserResults(userId);
-        res.json({ results });
-    } catch (error) {
-        console.error('Error getting user results:', error);
-        res.status(500).json({ 
-            message: error.message || 'Failed to get user results'
         });
     }
 };

@@ -4,11 +4,7 @@ const API_KEY = process.env.GEMINI_API_KEY;
 const BASE = 'https://generativelanguage.googleapis.com/v1beta';
 
 export const askGemini = async (question) => {
-  // בחרי אחד מהמודלים שמתאימים לך:
   const model = 'gemini-2.5-flash';  
-  // או:
-  // const model = 'gemini-2.5-flash-lite-preview-06-17';
-
   const url = `${BASE}/models/${model}:generateContent?key=${API_KEY}`;
 
   try {
@@ -18,7 +14,7 @@ export const askGemini = async (question) => {
     return data.candidates?.[0]?.content?.parts?.[0]?.text ?? 'אין תשובה';
   } catch (err) {
     console.error('Gemini error:', err.response?.data || err.message);
-    throw new Error('שגיאה בפנייה ל־Gemini');
+    throw new Error('Error communicating with Gemini API');
   }
 };
 

@@ -13,12 +13,8 @@ export const createFeedback = async (req, res) => {
 
 export const getAllFeedbacks = async (req, res) => {
   try {
-    // בדוק אם המשתמש הוא מנהל לפי role === 1
-    if (!req.user || req.user.role !== 1) {
-      return res.status(403).json({ error: 'Access denied' });
-    }
     const feedbacks = await feedbackService.getAllFeedbacks();
-    res.json(feedbacks);
+    res.status(200).json(feedbacks);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -1,6 +1,6 @@
-import Feedback from '../models/Feedback.js';
-import User from '../models/User.js';
-
+// import Feedback from '../models/Feedback.js';
+// import User from '../models/User.js';
+import {Feedback, User} from '../models/index.js'; 
 async function createFeedback(userId, content) {
   try {
     return await Feedback.create({ userId, content });

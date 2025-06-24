@@ -3,10 +3,8 @@ import { getAllGames, getGameById, getGamesByCategory } from '../services/gameSe
 
 export const getGames = async (req, res) => {
     try {
-        console.log('Controller: getGames called');
         const games = await getAllGames();
-        console.log('Controller: games retrieved:', games);
-        res.json({ 
+        res.status(200).json({ 
             message: 'Games retrieved successfully',
             games: games
         });
@@ -22,7 +20,7 @@ export const getGames = async (req, res) => {
 export const getGame = async (req, res) => {
     try {
         const game = await getGameById(req.params.id);
-        res.json({ 
+        res.status(200).json({ 
             message: 'Game retrieved successfully',
             game: game
         });
@@ -38,7 +36,7 @@ export const getGame = async (req, res) => {
 export const getGamesByCategoryController = async (req, res) => {
     try {
         const games = await getGamesByCategory(req.params.category);
-        res.json({ 
+        res.status(200).json({ 
             message: 'Games retrieved successfully',
             games: games
         });

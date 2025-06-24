@@ -1,6 +1,7 @@
-import Message from '../models/Message.js';
-import User from '../models/User.js';
+
 import sequelize from '../db/connection.js';
+import {Message, User} from '../models/index.js'; 
+
 
 export const getMessages = async (page = 1, limit = 20) => {
     const offset = (page - 1) * limit;

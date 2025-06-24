@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { generateToken } from '../middleware/authentication.js';
 import sequelize from '../db/connection.js';
 import jwt from 'jsonwebtoken';
-import { Op } from 'sequelize'; // תיקון: ייבוא Op
+import { Op } from 'sequelize'; 
 
 const SECRETKEY = process.env.SECRETKEY || 'your-secret-key';
 

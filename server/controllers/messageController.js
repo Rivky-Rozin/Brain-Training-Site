@@ -17,9 +17,9 @@ export const createMessage = async (req, res) => {
         if (!user_id || (!content && !media_url)) {
             return res.status(400).json({ error: 'Missing user_id and message content or media' });
         }
-        // ניצור הודעה חדשה ונחזיר אותה עם include מלא דרך ה-service
+        //האינקלוד יוזר אומר לסרוויס לכלול גם את המשתמש שמקושר לההודעה
         const message = await addMessage(user_id, content, media_url, { includeUser: true });
-        res.json(message);
+        res.status(201).json(message);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -37,7 +37,7 @@ export const updateMessage = async (req, res) => {
         if (updated === undefined) return res.status(500).json({ error: 'Server error' });
         if (updated === null) return res.status(404).json({ error: 'Message not found' });
         if (updated === false) return res.status(403).json({ error: 'Unauthorized' });
-        res.json(updated);
+        res.status(200).json(updated);
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
@@ -51,7 +51,7 @@ export const deleteMessage = async (req, res) => {
         if (result === undefined) return res.status(500).json({ error: 'Server error' });
         if (result === null) return res.status(404).json({ error: 'Message not found' });
         if (result === false) return res.status(403).json({ error: 'Unauthorized' });
-        res.json(result);
+        res.status(200).json(result);
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
