@@ -1,5 +1,5 @@
 // בדיקות לפני שמעבירים לראוטס, למשל בדיקה אם המשתמש מחובר לפני שפונים לבסיס נתונים
-import { loginUser, registerUser, updatePassword, getUserResults } from '../services/userService.js';
+import { loginUser, registerUser } from '../services/userService.js';
 
 export const checkAuth = async (req, res) => {
     try {

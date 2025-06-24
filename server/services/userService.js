@@ -11,9 +11,9 @@ const SECRETKEY = process.env.SECRETKEY || 'your-secret-key';
 export const registerUser = async (username, email, password) => {
     try {
         // בדיקה אם המשתמש או האימייל כבר קיימים
-        const existingUser = await User.findOne({ where: { [Op.or]: [{ username }, { email }] } }); // שימוש ב-Op
+        const existingUser = await User.findOne({ where: { email }}); // שימוש ב-Op
         if (existingUser) {
-            throw new Error('Username or email already exists');
+            throw new Error('Email already exists');
         }
 
         // יצירת משתמש חדש
@@ -126,60 +126,3 @@ export const updateUserProfileImage = async (userId, profileImage) => {
     }
 };
 
-export const getTables = async () => {
-    const [results] = await sequelize.query('SHOW TABLES');
-    return results.map(result => Object.values(result)[0]);
-};
-
-export const updatePassword = async (userId, currentPassword, newPassword) => {
-    try {
-        // Get current user with password
-        const user = await User.findOne({
-            where: { id: userId },
-            include: [Password]
-        });
-
-        if (!user) {
-            throw new Error('User not found');
-        }
-
-        // Verify current password
-        const validPassword = await bcrypt.compare(currentPassword, user.Password.hashedPassword);
-        if (!validPassword) {
-            throw new Error('Current password is incorrect');
-        }
-
-        // Hash new password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(newPassword, salt);
-
-        // Update password
-        await user.Password.update({
-            hashedPassword,
-            salt
-        });
-
-        return { message: 'Password updated successfully' };
-    } catch (error) {
-        throw error;
-    }
-};
-
-
-// קבלת תוצאות משתמש
-export const getUserResults = async (userId) => {
-    try {
-        const results = await Result.findAll({
-            where: { userId },
-            include: [{
-                model: Game,
-                attributes: ['name', 'category']
-            }],
-            order: [['completedAt', 'DESC']]
-        });
-
-        return results;
-    } catch (error) {
-        throw error;
-    }
-};

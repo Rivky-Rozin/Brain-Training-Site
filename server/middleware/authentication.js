@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 const secretKey = process.env.SECRETKEY ?? "SECRETKEY"
 const generateToken = (payload) => {
-    return jwt.sign(payload, secretKey, { expiresIn: '1h' });
+    return jwt.sign(payload, secretKey, { expiresIn: '24h' });
 };
 
 function verifyToken(req, res, next) {

@@ -31,29 +31,6 @@ function fileFilter(req, file, cb) {
 
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
-// פונקציה למחיקת תמונה מהתיקיה uploads
-export function deleteProfileImage(filename) {
-    if (!filename) return;
-    const uploadsDir = path.join(process.cwd(), 'server', 'uploads');
-    const imagePath = path.join(uploadsDir, filename.replace('/uploads/', ''));
-    fs.unlink(imagePath, (err) => {
-        if (err) {
-            if (err.code !== 'ENOENT') {
-                console.error('שגיאה במחיקת קובץ תמונה:', err);
-            }
-        } else {
-            console.log('תמונת פרופיל נמחקה:', imagePath);
-        }
-    });
-}
 
-// מידלוור שמוחק תמונה ישנה אם קיימת בפרופיל המשתמש
-export function deleteOldProfileImageIfExists(req, res, next) {
-    const user = req.user;
-    if (user && user.profile_image) {
-        deleteProfileImage(user.profile_image);
-    }
-    next();
-}
 
 export default upload;
