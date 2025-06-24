@@ -336,38 +336,6 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* <div className="recent-results">
-        <h3>Recent Results</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Game</th>
-              <th>Score</th>
-              <th>Time Spent</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {results.slice(0, 10).map((r, i) => (
-              <tr key={i}>
-                <td>{r.Game?.name || 'Unknown Game'}</td>
-                <td>{r.score}</td>
-                <td>{r.timeSpent}s</td>
-                <td>{new Date(r.completedAt).toLocaleDateString()}</td>
-              </tr>
-            ))}
-            {results.length > 0 && (
-              <tr style={{ fontWeight: 'bold' }}>
-                <td>Average</td>
-                <td>{avgScore}</td>
-                <td>{avgTimeSpent}s</td>
-                <td>-</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div> */}
-
       {/* Feedback form for non-admin users */}
       {userData.role !== 1 && (
         <div className="feedback-section" style={{ margin: '2rem 0', padding: '1rem', border: '1px solid #eee', borderRadius: 8 }}>
