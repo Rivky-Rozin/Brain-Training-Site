@@ -25,6 +25,7 @@ export function validateRegister(req, res, next) {
     next();
 }
 
+
 // Middleware for login validation
 export function validateLogin(req, res, next) {
     const { email, password } = req.body;
