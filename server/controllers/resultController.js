@@ -5,7 +5,7 @@ import { getUserResults as getUserResultsService, saveResult as saveResultServic
 export const getAllResults = async (req, res) => {
     try {
         const results = await getAllResultsService();
-        res.json({ results });
+        res.status(200).json({ results });
     } catch (error) {
         console.error('Error getting all results:', error);
         res.status(500).json({ error: error.message });
@@ -15,7 +15,7 @@ export const getAllResults = async (req, res) => {
 export const getUserResultsController = async (req, res) => {
     try {
         const results = await getUserResultsService(req.params.userId);
-        res.json(results);
+        res.status(200).json(results);
     } catch (error) {
         console.error('Error getting user results:', error);
         res.status(500).json({ error: error.message });
@@ -30,7 +30,7 @@ export const saveResultController = async (req, res) => {
             return res.status(400).json({ error: 'Missing required fields' });
         }
         const result = await saveResultService(userId, gameId, score, timeSpent);
-        res.status(201).json(result);
+        res.status(200).json(result);
     } catch (error) {
         console.error('Error saving result:', error);
         res.status(500).json({ error: error.message });

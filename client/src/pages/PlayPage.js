@@ -70,8 +70,8 @@ export default function PlayPage() {
         default:
             return (
                 <div className="container mx-auto py-8">
-                    <h2 className="text-xl font-bold">Unknown game ID: {gameId}</h2>
-                    <p>Please check the URL or go back to the games list.</p>
+                    <h2 className="text-xl font-bold">Working on it...</h2>
+                    <p>Please check back later for updates. </p>
                 </div>
             );
     }
