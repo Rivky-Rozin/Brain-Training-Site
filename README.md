@@ -1,24 +1,29 @@
-# פרויקט גמר
+# 🧠 Train Your Brain  
 
-פרויקט זה הוא חלק מפרויקט הגמר של הקורס.
+Interactive web application for cognitive training through fun and engaging games.  
 
-## התקנה
+---
 
-1. התקן את התלויות:
-```bash
-npm install
-```
+## 📖 Overview  
+**Train Your Brain** is a full-stack web application that provides users with brain-training games designed to improve memory, concentration, and problem-solving skills.  
+The platform includes progress tracking with graphs, an integrated chatbot powered by Gemini API, and a responsive user interface.  
 
-2. הפעל את השרת:
-```bash
-npm start
-```
+---
 
-## מבנה הפרויקט
+## 🚀 Features  
+- 🎮 **Brain-training games** – improve memory, focus, and logic.  
+- 📊 **Progress tracking** – visualize performance with interactive graphs (Recharts).  
+- 🤖 **AI Chatbot** – powered by Gemini API to answer user questions.  
+- 📱 **Responsive design** – works seamlessly on desktop and mobile.  
+- 💾 **Data persistence** – user progress and statistics stored in a MySQL database.  
 
-- `client/` - קוד הצד-לקוח
-- `server/` - קוד הצד-שרת
-  - `services/` - שירותים
-  - `routes/` - נתיבי API
-  - `controllers/` - בקרים
-  - `db/` - הגדרות בסיס הנתונים 
+---
+
+## 🛠️ Tech Stack  
+- **Frontend:** React, Recharts, CSS  
+- **Backend:** Node.js, Express  
+- **Database:** MySQL  
+- **API:** Gemini AI  
+- **Tools:** Git, GitHub, Postman, VSCode  
+
+---
